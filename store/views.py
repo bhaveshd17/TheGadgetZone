@@ -12,7 +12,7 @@ def store(request):
 		cartItems = order.get_cart_items
 	else:
 		items = []
-		order = {'get_cart_total':0, 'get_cart_items':0}
+		order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
 		cartItems = []
 
 
@@ -29,11 +29,12 @@ def cart(request):
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 		items = order.orderitem_set.all()
 		cartItems = order.get_cart_items
+		# print('c', created)
 	else:
 		items = []
-		order = {'get_cart_total':0, 'get_cart_items':0}
+		order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
 		cartItems = []
-
+	# print('order',order.shipping)
 	content = {'items':items, 'order':order, 'cartItems':cartItems}
 	return render(request, 'store/cart.html', content)
 
@@ -45,7 +46,7 @@ def checkout(request):
 		cartItems = order.get_cart_items
 	else:
 		items = []
-		order = {'get_cart_total':0, 'get_cart_items':0}
+		order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
 		cartItems = []
 
 	content = {'items':items, 'order':order, 'cartItems':cartItems}
@@ -55,8 +56,8 @@ def updateItem(request):
 	data = json.loads(request.body)
 	productId = data['productId']
 	action = data['action']
-	print(productId, action)
-
+	# print(productId, action)
+	
 	customer = request.user.customer
 	product = Product.objects.get(id=productId)
 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
