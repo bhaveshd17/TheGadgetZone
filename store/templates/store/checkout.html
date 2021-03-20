@@ -5,16 +5,19 @@
 <div class="row mt-3">
     <div class="col-lg-6">
         <div class="box-element" id="form-wrapper">
-            <form id="form">
-
-                <div id="shipping-info">
-                    <h6>Shipping Information:</h6>
+            <form id="form" method="POST" action="checkout/">
+                {% csrf_token %}
+                <h6>Shipping Information:</h6>
+                <div id="user-info">
                     <div class="form-field">
                         <input required class="form-control" type="text" name="name" placeholder="Name">
                     </div>
                     <div class="form-field">
                         <input required class="form-control" type="email" name="email" placeholder="Email">
                     </div>
+                </div>
+
+                <div id="shipping-info">
                     <div class="form-field">
                         <input class="form-control" type="text" name="address" placeholder="Address">
                     </div>
@@ -32,13 +35,14 @@
                     </div>
                 </div>
 
-                <input id="form-button" class="btn btn-success btn-block mt-3" type="submit" value="Continue">
+                <input id="form-button" class="btn btn-success btn-block mt-3" type="submit" value="continue">
             </form>
         </div>
 
         <br>
         <div class="box-element hidden" id="payment-info">
             <small>Paypal Options</small>
+            <button id="make-payment">Make Payment</button>
         </div>
 
     </div>
@@ -68,18 +72,78 @@
 </div>
 
 <script>
+    const current_user = '{{request.user}}';
     const shipping = '{{order.shipping}}';
+    const cart_total = '{{order.get_cart_total}}'
+
     if(shipping === 'False'){
         document.getElementById('shipping-info').innerHTML = ''
     }
 
+    if (current_user != 'AnonymousUser') {
+        document.getElementById('user-info').innerHTML = ''
+    }
+    if (shipping == 'False' && current_user != 'AnonymousUser') {
+        document.getElementById('from-wrapper').classList.add('hidden');
+        document.getElementById('payment-info').classList.remove('hidden');
+    }
+
     const form = document.getElementById('form')
-    form.addEventListener('submit', function(e){
+    form.addEventListener('submit', function (e) {
         e.preventDefault()
-        console.log('shipping address submitted...')
+        // console.log('shipping address submitted...')
         document.getElementById('form-button').classList.add('hidden')
         document.getElementById('payment-info').classList.remove('hidden')
-        
     })
+
+    const submitFormData = () => {
+        // console.log('PAYMENT BUTTON CLICKED')
+        const userFormData = {
+            'name':null,
+            'email':null,
+            'total':cart_total
+        }
+        const shippingInfo = {
+            'address':null,
+            'city':null,
+            'state':null,
+            'zipcode':null,
+            'country':null
+        }
+        if(shipping !== 'False'){
+            shippingInfo.address = form.address.value
+            shippingInfo.city = form.city.value
+            shippingInfo.state = form.state.value
+            shippingInfo.zipcode = form.zipcode.value
+            shippingInfo.country = form.country.value
+        }
+        if(current_user == 'AnonymousUser'){
+            userFormData.name = form.name.value
+            userFormData.email = form.email.value
+        }
+
+        const url = '/process_order/'
+        fetch(url, {
+            method : 'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'X-CSRFToken':csrftoken,
+            },
+            body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo})
+
+        })
+        .then((response)=>response.json())
+        .then((data)=>{
+            alert('Transaction Complete')
+            window.location.href = "{% url 'store' %}"
+        })
+
+
+    }
+    document.getElementById('make-payment').addEventListener('click', function (e) {
+        submitFormData()
+    })
+
+
 </script>
 {%endblock body%}
