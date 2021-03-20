@@ -65,8 +65,6 @@
 
 
 
-
-
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"
     integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi"
     crossorigin="anonymous"></script>
@@ -77,7 +75,7 @@
   <script>
     const user = '{{request.user}}'
 
-    function getCookie(name) {
+    function getCookies(name) {
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
@@ -91,8 +89,19 @@
       }
       return cookieValue;
     }
-    const csrftoken = getCookie('csrftoken');
+
+
+    const csrftoken = getCookies('csrftoken');
+    let cart = JSON.parse(getCookies('cart'))
+    if (cart == undefined) {
+      cart = {}
+      // console.log('cart created')
+      document.cookie = 'cart=' + JSON.stringify(cart) + "; domain=;path=/"
+    }
+    // console.log(cart)
+
   </script>
+
 </body>
 
 </html>
