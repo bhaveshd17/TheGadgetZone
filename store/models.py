@@ -11,12 +11,17 @@ class Customer(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
+    category = models.CharField(max_length=100, default="")
+    subCategory = models.CharField(max_length=100, default="")
     price = models.FloatField()
+    rate = models.IntegerField(default=0)
+    discountPrice = models.FloatField(default=0)
     digital = models.BooleanField(default=False, null=True, blank=False)
     image = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.name
+
 
     @property
     def ImageUrl(self):
@@ -67,7 +72,7 @@ class OrderItem(models.Model):
 
     @property
     def get_total(self):
-        total = self.product.price * self.quantity
+        total = self.product.discountPrice * self.quantity
         return total
 
 class ShippingAddress(models.Model):

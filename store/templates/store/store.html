@@ -4,10 +4,9 @@
 {%block body%}
 <div id="storeCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#storeCarousel" data-bs-slide-to="0" class="active"
-            aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#storeCarousel" data-bs-slide-to="1"
-            aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#storeCarousel" data-bs-slide-to="0" class="active" aria-current="true"
+            aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#storeCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
@@ -17,13 +16,11 @@
             <img src="{%static 'img/off1.jpeg'%}" class="d-block" width="1500" height="400" alt="...">
         </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#storeCarousel"
-        data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#storeCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#storeCarousel"
-        data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#storeCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
@@ -36,9 +33,22 @@
         <img class="thumbnail" src="{{product.ImageUrl}}" alt="">
         <div class="box-element product">
             <h6><strong>{{product.name}}</strong></h6>
-            <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-warning add-btn update-cart">Add to Cart</button>
-            <a class="btn btn-outline-primary" href="#">View</a>
-            <h4 style="	float: right; font-size: 15px; color: green;"><strong>INR {{product.price|floatformat:2}}</strong></h4>
+
+            <div class="d-flex flex-column">
+                <h4 style="font-size: 15px; color: green;"><strong>Price: &#8377;
+                        {{product.discountPrice|floatformat:2}}</strong></h4>
+                <h4 style="font-size: 15px; color: #383838;"><del>M.R.P.: &#8377;
+                        {{product.price|floatformat:2}}</del></h4>
+
+                <h4 style="font-size: 15px;"><strong>Discount: {{product.rate}}%</strong></h4>
+            </div>
+            <div class="my-2">
+                <button data-product="{{product.id}}" data-action="add"
+                    class="btn btn-outline-warning add-btn update-cart">
+                    Add to Cart
+                </button>
+                <a class="btn btn-outline-primary" href="#">View</a>
+            </div>
         </div>
     </div>
     {% endfor %}

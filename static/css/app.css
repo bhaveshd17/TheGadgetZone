@@ -23,7 +23,7 @@ h1,h2,h3,h4,h5,h6{
 
 /* .navbar */
 .bg-dark{
-	background-color: #1c2466!important;
+	background-color: #161d5c!important;
     font-weight: 500;
 }
 
@@ -72,7 +72,7 @@ h1,h2,h3,h4,h5,h6{
 }
 
 .btn{
-	border-radius: 0;
+	border-radius: 15px;
 }
 
 .row-image{
