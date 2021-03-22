@@ -11,8 +11,8 @@ def store(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
 
-	product = Product.objects.all()
-	content = {'products':product, 'cartItems':cartItems}
+	products = Product.objects.all()
+	content = {'products':products, 'cartItems':cartItems}
 
 	# for p in product:
 	# 	print(p.image.url)

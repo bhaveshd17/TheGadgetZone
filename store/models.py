@@ -11,11 +11,12 @@ class Customer(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
-    category = models.CharField(max_length=100, default="")
-    subCategory = models.CharField(max_length=100, default="")
+    category = models.CharField(max_length=100)
+    subCategory = models.CharField(max_length=100, null=True)
     price = models.FloatField()
-    rate = models.IntegerField(default=0)
-    discountPrice = models.FloatField(default=0)
+    savePrice = models.FloatField(default=0)
+    rate = models.IntegerField()
+    discountPrice = models.FloatField()
     digital = models.BooleanField(default=False, null=True, blank=False)
     image = models.ImageField(null=True, blank=True)
 

@@ -74,7 +74,30 @@ h1,h2,h3,h4,h5,h6{
 .btn{
 	border-radius: 15px;
 }
+.btn-outline-primary {
+    color:  #1d267e;
+    background-color: transparent;
+    background-image: none;
+    border-color:  #1d267e;
+}
 
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color:  #1d267e;
+    border-color:  #1d267e;
+}
+.btn-outline-warning {
+    color:  #f0ad41f1;
+    background-color: transparent;
+    background-image: none;
+    border-color:  #f0ad41f1;
+}
+
+.btn-outline-warning:hover {
+    color: #222;
+    background-color:  #f0ad41f1;
+    border-color:  #f0ad41f1;
+}
 .row-image{
 	width: 100px;
 }
