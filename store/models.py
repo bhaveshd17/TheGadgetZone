@@ -9,11 +9,20 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+
+class Category(models.Model):
+    category = models.CharField(max_length=100)
+    # subCategory = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.category
+
+
+
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
-    category = models.CharField(max_length=100)
-    subCategory = models.CharField(max_length=100, null=True)
     price = models.FloatField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     savePrice = models.FloatField(default=0)
     rate = models.IntegerField()
     discountPrice = models.FloatField()
@@ -31,6 +40,7 @@ class Product(models.Model):
         except:
             url = ''
         return url
+
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)

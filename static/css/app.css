@@ -141,3 +141,30 @@ h1,h2,h3,h4,h5,h6{
 .hidden{
 	display: none!important;
 }
+
+/* homepage slides css */
+body .no-padding {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+
+.carousel-control-next-custom {
+	width: 3%;
+}
+.carousel-control-prev-custom{
+	width: 5%;
+}
+
+.carousel-control-prev-icon-custom,
+.carousel-control-next-icon-custom {
+	outline: black;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+.row{
+	padding: 0px 55px;
+}
+
+.card-title{
+	font-size: 15px;
+}

@@ -1,5 +1,6 @@
 import datetime
 import json
+from math import ceil
 
 from django.shortcuts import render
 from .models import *
@@ -11,8 +12,20 @@ def store(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
 
-	products = Product.objects.all()
-	content = {'products':products, 'cartItems':cartItems}
+	# products = Product.objects.all()
+	categoryOfProducts = Product.objects.values('category', 'id')
+	allProducts = []
+	categories = [item['category'] for item in categoryOfProducts]
+	categoriesC = set(categories)
+	for category in categoriesC:
+		products = Product.objects.filter(category=category)
+		n = len(products)
+		nSlide = n // 4 + ceil((n / 4) - (n // 4))
+		allProducts.append([products, range(1, nSlide), nSlide])
+
+
+	# allProducts = [[products, nSlide, range(1, nSlide)], [products, nSlide, range(1, nSlide)]]
+	content = {'allProducts':allProducts, 'cartItems':cartItems}
 
 	# for p in product:
 	# 	print(p.image.url)
