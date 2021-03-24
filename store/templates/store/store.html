@@ -29,7 +29,7 @@
 <!-- slide show -->
 
 {% for products, range, nSlide in allProducts %}
-<h4>{{products.0.category}}</h4>
+<h4 class="text-center my-3">{{products.0.category}} Products - Recommended for you</h4>
 <div id="productCarousel{{forloop.counter}}" class="carousel slide" data-bs-ride="carousel">
 
     <div class="carousel-inner  no-padding">
@@ -110,5 +110,4 @@
 
 {% endfor %}
 </div>
-
 {%endblock body%}
