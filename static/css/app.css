@@ -1,7 +1,9 @@
 body{
 	background-color: #fafafa;
 }
-
+a{
+	text-decoration: none;
+}
 h1,h2,h3,h4,h5,h6{
 	color:#4d4d4d;
 }
@@ -71,9 +73,7 @@ h1,h2,h3,h4,h5,h6{
 	margin-top: 10px;
 }
 
-.btn{
-	border-radius: 15px;
-}
+
 .btn-outline-primary {
     color:  #1d267e;
     background-color: transparent;
@@ -167,4 +167,21 @@ body .no-padding {
 
 .card-title{
 	font-size: 15px;
+}
+
+
+/* dashboard */
+#total-orders{
+	background-color: #4cb4c7;
+}
+#orders-delivered{
+	background-color: #7abecc;
+}
+#orders-pending{
+	background-color: #7CD1C0;
+}
+
+.statusSize{
+	font-size: 20px;
+	color: white;
 }

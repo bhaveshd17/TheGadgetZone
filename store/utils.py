@@ -25,7 +25,7 @@ def cookiesCart(request):
                     'id': product.id,
                     'name': product.name,
                     'category':product.category,
-                    'subCategory':product.subCategory,
+                    # 'subCategory':product.subCategory,
                     'savePrice':product.savePrice,
                     'price': product.price,
                     'discountPrice':product.discountPrice,

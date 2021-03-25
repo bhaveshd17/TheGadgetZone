@@ -30,6 +30,9 @@
             <a class="nav-link" href="{% url 'store' %}">Store</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">dashboard</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#">Mobile & Accessories</a>
           </li>
           <li class="nav-item">
@@ -63,7 +66,7 @@
     {%endblock body%}
   </div>
 
-  <footer class="footer bg-dark py-2 mt-auto">
+  <footer class="footer bg-dark py-2 mt-auto fixed-bottom">
     <div class="container">
         <span class="text-muted"">&copy; The Gadgets Zone</span>
     </div>
@@ -81,7 +84,7 @@
   <script src="{% static 'js/cart.js' %}"></script>
   <script>
     const user = '{{request.user}}'
-
+ 
     function getCookies(name) {
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {

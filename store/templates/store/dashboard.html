@@ -1,0 +1,95 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+
+
+{%block body%}
+<div class="row mt-3">
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="total-orders">
+                <div class="card-header">
+                    <h5 class="card-title statusSize">Total Order</h5>
+                </div>
+                <div class="card-body my-3">
+                    <h3 class="card-title statusSize">{{total_order}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="orders-delivered">
+                <div class="card-header">
+                    <h5 class="card-title statusSize">Order Delivered</h5>
+                </div>
+                <div class="card-body my-3">
+                    <h3 class="card-title statusSize">{{delivered}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="orders-pending">
+                <div class="card-header">
+                    <h5 class="card-title statusSize">Order Pending</h5>
+                </div>
+                <div class="card-body my-3">
+                    <h3 class="card-title statusSize">{{pending}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row my-3">
+    <div class="col-md-5">
+        <h4>Customers</h4>
+        <div class="card card-body">
+
+            <a href="#" class="btn btn-primary btn-sm btn-block">
+                Create Customer
+            </a>
+            </a>
+            <table class="table table-sm">
+                <tr>
+                    <th>Customer</th>
+                    <th>Order</th>
+                </tr>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{customer.name}}</td>
+                    <td>{{customer.email}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <h4>Last 5 Orders</h4>
+        <div class="card card-body">
+            <a href="{% url 'allOrders' %}" class="btn btn-primary btn-sm btn-block">
+                View all Orders
+            </a>
+            <table class="table table-sm">
+                <tr>
+                    <th>Product</th>
+                    <th>Date Ordered</th>
+                    <th>Status</th>
+                </tr>
+                {% for orderItem in orderItems %}
+                <tr>
+                    <td>{{orderItem.product.category}}</td>
+                    <td>{{orderItem.order.date}}</td>
+                    <td>{{orderItem.order.status}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{%endblock body %}
