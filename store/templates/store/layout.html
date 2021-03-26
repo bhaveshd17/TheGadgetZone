@@ -30,7 +30,7 @@
             <a class="nav-link" href="{% url 'store' %}">Store</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'dashboard' %}">dashboard</a>
+            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Mobile & Accessories</a>
@@ -84,7 +84,7 @@
   <script src="{% static 'js/cart.js' %}"></script>
   <script>
     const user = '{{request.user}}'
- 
+
     function getCookies(name) {
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {

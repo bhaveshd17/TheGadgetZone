@@ -7,7 +7,6 @@ from .models import *
 from django.http import JsonResponse
 from .utils import cartData, guestOrder
 
-
 def store(request):
 
 	data = cartData(request)
@@ -24,7 +23,12 @@ def store(request):
 		nSlide = n // 4 + ceil((n / 4) - (n // 4))
 		allProducts.append([products, range(1, nSlide), nSlide])
 
+
+	# allProducts = [[products, nSlide, range(1, nSlide)], [products, nSlide, range(1, nSlide)]]
 	content = {'allProducts':allProducts, 'cartItems':cartItems}
+
+	# for p in product:
+	# 	print(p.image.url)
 	return render(request, 'store/store.html', content)
 
 def cart(request):
@@ -46,6 +50,7 @@ def checkout(request):
 
 	content = {'items':items, 'order':order, 'cartItems':cartItems}
 	return render(request, 'store/checkout.html', content)
+
 
 
 
@@ -103,38 +108,29 @@ def processOrder(request):
 
 	return JsonResponse('Payment Complete', safe=False)
 
-
 def dashboard(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
-	orderItems = OrderItem.objects.all().order_by("date")
 	customers = Customer.objects.all()
-	total_order = orderItems.count()
-	order = []
-	for orderItem in orderItems:
-		order.append(orderItem.order.status)
-
-	delivered = order.count('Delivered')
-	pending = order.count('Pending')
-
-	content={
+	orderItem = OrderItem.objects.all().order_by("-date")
+	orderItems = [orderItem[i] for i in range(0, 5)]
+	delivered = orderItem.filter(status='Delivered').count()
+	pending = orderItem.filter(status='Pending').count()
+	content = {
 		'cartItems':cartItems,
 		'customers':customers,
-		'orderItems':[orderItems[i] for i in range(0, 5)],
-		'total_order':total_order,
+		'orderItems':orderItems,
+		'total_order':orderItem.count(),
 		'delivered':delivered,
-		'pending':pending
+		'pending':pending,
+
+
 	}
 	return render(request, 'store/dashboard.html', content)
 
-def allOrders(request):
+def allOrder(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
-	orderItems = OrderItem.objects.all().order_by("date")
-	customers = Customer.objects.all()
-	content = {
-		'cartItems': cartItems,
-		'customers': customers,
-		'orderItems': orderItems,
-	}
-	return render(request, 'store/allOrders.html', content)
+	orderItems = OrderItem.objects.all().order_by("-date")
+	content = {'cartItems':cartItems, 'orderItems':orderItems}
+	return render(request, 'store/allOrder.html', content)

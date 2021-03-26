@@ -1,9 +1,7 @@
 body{
 	background-color: #fafafa;
 }
-a{
-	text-decoration: none;
-}
+
 h1,h2,h3,h4,h5,h6{
 	color:#4d4d4d;
 }
@@ -173,6 +171,7 @@ body .no-padding {
 /* dashboard */
 #total-orders{
 	background-color: #4cb4c7;
+
 }
 #orders-delivered{
 	background-color: #7abecc;
@@ -182,6 +181,6 @@ body .no-padding {
 }
 
 .statusSize{
-	font-size: 20px;
 	color: white;
+	font-size: 20px;
 }
