@@ -1,11 +1,11 @@
 import datetime
 import json
 from math import ceil
-
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from django.http import JsonResponse
 from .utils import cartData, guestOrder
+from .form import AddProductForm
 
 def store(request):
 
@@ -134,3 +134,28 @@ def allOrder(request):
 	orderItems = OrderItem.objects.all().order_by("-date")
 	content = {'cartItems':cartItems, 'orderItems':orderItems}
 	return render(request, 'store/allOrder.html', content)
+
+def addProducts(request):
+	data = cartData(request)
+	cartItems = data['cartItems']
+	categories = Category.objects.all()
+	if request.method == 'POST':
+		product = Product()
+		product.name = request.POST.get('name')
+		price = float(request.POST.get('price'))
+		rate = int(request.POST.get('rate'))
+		savePrice = ceil((price*rate)/100)
+		discountPrice = price - savePrice
+		product.price = price
+		product.rate = rate
+		product.savePrice = savePrice
+		product.discountPrice = discountPrice
+		categoryId = request.POST.get('category')
+		product.category = Category.objects.get(id=categoryId)
+		product.digital = request.POST.get('digital')
+		product.image = request.FILES.get('image')
+		product.save()
+		return redirect('/')
+
+	content = {'cartItems':cartItems, 'categories':categories}
+	return render(request, 'store/product_form.html', content)

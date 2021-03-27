@@ -14,52 +14,8 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'store' %}">
-        <!-- <img src="{% static 'img/logo.png' %}" alt="the gadgets zone" class="img-fluid"> -->
-        The Gadgets Zone
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'store' %}">Store</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Mobile & Accessories</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Laptops</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Airpod</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Home Appliances</a>
-          </li>
-        </ul>
-
-        <div class="d-flex mb-2 mb-lg-0">
-          <a href="{% url 'cart' %}">
-            <img id="cart-icon" src="{% static 'img/cart.png' %}">
-          </a>
-          <p id="cart-total">{{cartItems}}</p>
-          <a href="#" class="btn btn-warning" id="custom-login-btn">Signin</a>
-          <a href="#" class="btn btn-warning" id="custom-login-btn">Login</a>
-
-        </div>
-
-      </div>
-    </div>
-  </nav>
-  <div class="container">
+  {% include 'store/navbar.html' %}
+  <div class="container mb-5">
     {%block body%}
 
 
@@ -82,6 +38,7 @@
     integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG"
     crossorigin="anonymous"></script>
   <script src="{% static 'js/cart.js' %}"></script>
+  <script src="{% static 'js/formValidation.js' %}"></script>
   <script>
     const user = '{{request.user}}'
 

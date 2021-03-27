@@ -1,3 +1,6 @@
+from decimal import Decimal
+
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -21,13 +24,13 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=16, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
-    savePrice = models.FloatField(default=0)
-    rate = models.IntegerField()
-    discountPrice = models.FloatField()
+    savePrice = models.DecimalField(max_digits=16, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
+    rate = models.PositiveIntegerField()
+    discountPrice = models.DecimalField(max_digits=16, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     digital = models.BooleanField(default=False, null=True, blank=False)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(upload_to="img/%y", null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -80,7 +83,7 @@ class OrderItem(models.Model):
     )
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
-    quantity = models.IntegerField(default=0, null=True, blank=True)
+    quantity = models.PositiveIntegerField(default=0, null=True, blank=True)
     status = models.CharField(max_length=100, null=True, choices=status_category, default="Pending")
     date = models.DateTimeField(auto_now_add=True)
 

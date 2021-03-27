@@ -30,7 +30,7 @@
 
 {% for products, range, nSlide in allProducts %}
 <h4 class="text-center my-3">{{products.0.category}} Products - Recommended for you</h4>
-<div id="productCarousel{{forloop.counter}}" class="carousel slide" data-bs-ride="carousel">
+<div id="productCarousel{{forloop.counter}}" class="carousel slide mb-3" data-bs-ride="carousel">
 
     <div class="carousel-inner  no-padding">
         <div class="carousel-item active">
@@ -47,7 +47,7 @@
                                         {{products.0.price|floatformat:2}}</del></h4>
 
                                 <h4 style="font-size: 15px;"><strong>Discount: {{products.0.rate}}% </strong><span
-                                        style="color: #b32e1c;">(save &#8377; {{product.0.savePrice}})</span></h4>
+                                        style="color: #b32e1c;">(save &#8377; {{products.0.savePrice}})</span></h4>
                             </div>
                             <div class="my-2">
                                 <button data-product="{{products.0.id}}" data-action="add"
