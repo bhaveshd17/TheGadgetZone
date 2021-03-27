@@ -116,6 +116,8 @@ def dashboard(request):
 	orderItems = [orderItem[i] for i in range(0, 5)]
 	delivered = orderItem.filter(status='Delivered').count()
 	pending = orderItem.filter(status='Pending').count()
+	shipping = orderItem.filter(status='Shipping').count()
+	accepted = orderItem.filter(status='Accepted').count()
 	content = {
 		'cartItems':cartItems,
 		'customers':customers,
@@ -123,7 +125,8 @@ def dashboard(request):
 		'total_order':orderItem.count(),
 		'delivered':delivered,
 		'pending':pending,
-
+		'accepted': accepted,
+		'shipping': shipping,
 
 	}
 	return render(request, 'store/dashboard.html', content)
@@ -159,3 +162,61 @@ def addProducts(request):
 
 	content = {'cartItems':cartItems, 'categories':categories}
 	return render(request, 'store/product_form.html', content)
+
+
+def acceptBtn(request):
+	if request.method == 'POST':
+		order_id = request.POST.get("acceptOrder")
+		orderItem = OrderItem.objects.get(id=order_id)
+		if orderItem.status == "Pending":
+			orderItem.status = "Accepted"
+			orderItem.save()
+		else:
+			print('message already accepted')
+		return redirect('/dashboard/allOrder')
+	else:
+		return redirect('/dashboard/allOrder')
+
+def shippingBtn(request):
+	if request.method == 'POST':
+		order_id = request.POST.get("shippingOrder")
+		orderItem = OrderItem.objects.get(id=order_id)
+		print(orderItem)
+		if orderItem.status == "Accepted":
+			orderItem.status = "Shipping"
+			orderItem.save()
+		else:
+			print('message already Shipped')
+		return redirect('/dashboard/allOrder')
+	else:
+		return redirect('/dashboard/allOrder')
+
+def deliveredBtn(request):
+	if request.method == 'POST':
+		order_id = request.POST.get("deliveredOrder")
+		orderItem = OrderItem.objects.get(id=order_id)
+		if orderItem.status == "Shipping":
+			orderItem.status = "Delivered"
+			orderItem.save()
+		else:
+			print('message already Delivered')
+		return redirect('/dashboard/allOrder')
+	else:
+		return redirect('/dashboard/allOrder')
+
+def removeOrderBtn(request):
+	if request.method == 'POST':
+		order_id = request.POST.get("removeOrder")
+		orderItem = OrderItem.objects.get(id=order_id)
+		orderItem.delete()
+		return redirect('/dashboard/allOrder')
+
+	else:
+		return redirect('/dashboard/allOrder')
+
+def orderDelivered(request):
+	data = cartData(request)
+	cartItems = data['cartItems']
+	orderItems = OrderItem.objects.filter(status="Delivered")
+	content = {'cartItems':cartItems, 'orderItems':orderItems}
+	return render(request, 'store/deliveredOrder.html', content)

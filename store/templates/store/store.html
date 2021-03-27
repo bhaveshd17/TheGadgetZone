@@ -35,32 +35,8 @@
     <div class="carousel-inner  no-padding">
         <div class="carousel-item active">
             <div class="row">
-                <div class="col-xs-3 col-sm-3 col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="{{ products.0.ImageUrl }}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ products.0.name}}</h5>
-                            <div class="d-flex flex-column">
-                                <h4 style="font-size: 15px; color: green;"><strong>Price: &#8377;
-                                        {{products.0.discountPrice|floatformat:2}}</strong></h4>
-                                <h4 style="font-size: 15px; color: #383838;"><del>M.R.P.: &#8377;
-                                        {{products.0.price|floatformat:2}}</del></h4>
 
-                                <h4 style="font-size: 15px;"><strong>Discount: {{products.0.rate}}% </strong><span
-                                        style="color: #b32e1c;">(save &#8377; {{products.0.savePrice}})</span></h4>
-                            </div>
-                            <div class="my-2">
-                                <button data-product="{{products.0.id}}" data-action="add"
-                                    class="btn btn-outline-warning add-btn update-cart">
-                                    Add to Cart
-                                </button>
-                                <a class="btn btn-outline-primary" href="#">View</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {% for product in products|slice:"1:" %}
+                {% for product in products %}
                 <div class="col-xs-1 col-sm-1 col-md-3">
                     <div class="card" style="width: 18rem;">
                         <img src="{{product.ImageUrl}}" class="card-img-top" alt="...">
@@ -85,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and not forloop.last%}
+                {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last%}
             </div>
         </div>
         <div class="carousel-item">

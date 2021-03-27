@@ -30,7 +30,7 @@ class Product(models.Model):
     rate = models.PositiveIntegerField()
     discountPrice = models.DecimalField(max_digits=16, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     digital = models.BooleanField(default=False, null=True, blank=False)
-    image = models.ImageField(upload_to="img/%y", null=True, blank=True)
+    image = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -78,6 +78,8 @@ class Order(models.Model):
 class OrderItem(models.Model):
     status_category = (
         ("Pending", "Pending"),
+        ("Accepted", "Accepted"),
+        ("Shipping", "Shipping"),
         ("Out for Delivery", "Out for Delivery"),
         ("Delivered", "Delivered")
     )

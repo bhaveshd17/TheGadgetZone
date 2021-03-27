@@ -146,7 +146,6 @@ body .no-padding {
 	padding-right: 0;
 }
 
-
 .carousel-control-next-custom {
 	width: 3%;
 }
@@ -166,23 +165,28 @@ body .no-padding {
 .card-title{
 	font-size: 15px;
 }
+.col-md-3 img{
+	max-width: 265px;
+    height: 230px;
+}
+
 
 
 /* dashboard */
-#total-orders{
+.color-1{
 	background-color: #4cb4c7;
 
 }
-#orders-delivered{
+.color-2{
 	background-color: #7abecc;
 }
-#orders-pending{
+.color-3{
 	background-color: #7CD1C0;
 }
 
 .statusSize{
 	color: white;
-	font-size: 20px;
+	font-size: 17px;
 }
 .order-table-btn-custom{
 	font-size: 10px;

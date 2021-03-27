@@ -10,5 +10,10 @@ urlpatterns = [
 	path('dashboard/', views.dashboard, name="dashboard"),
 	path('dashboard/allOrder/', views.allOrder, name="allOrder"),
 	path('addProducts/', views.addProducts, name="addProducts"),
+	path('dashboard/allOrder/accept', views.acceptBtn, name="accept"),
+	path('dashboard/allOrder/shipping', views.shippingBtn, name="shipping"),
+	path('dashboard/allOrder/delivered', views.deliveredBtn, name="delivered"),
+	path('dashboard/allOrder/remove', views.removeOrderBtn, name="remove"),
+	path('dashboard/orderDelivered', views.orderDelivered, name="orderDelivered")
 
 ]

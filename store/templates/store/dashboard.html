@@ -6,7 +6,7 @@
 <div class="row mt-3">
     <div class="col">
         <div class="col-md">
-            <div class="card text-center mb-3" id="total-orders">
+            <div class="card text-center mb-3 color-1">
                 <div class="card-header">
                     <h5 class="card-title statusSize">Total Order</h5>
                 </div>
@@ -18,7 +18,7 @@
     </div>
     <div class="col">
         <div class="col-md">
-            <div class="card text-center mb-3" id="orders-delivered">
+            <div class="card text-center mb-3 color-2">
                 <div class="card-header">
                     <h5 class="card-title statusSize">Order Delivered</h5>
                 </div>
@@ -30,7 +30,31 @@
     </div>
     <div class="col">
         <div class="col-md">
-            <div class="card text-center mb-3" id="orders-pending">
+            <div class="card text-center mb-3 color-2">
+                <div class="card-header">
+                    <h5 class="card-title statusSize">Shipped Order</h5>
+                </div>
+                <div class="card-body my-3">
+                    <h3 class="card-title statusSize">{{shipping}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3 color-3">
+                <div class="card-header">
+                    <h5 class="card-title statusSize">Accepted Order</h5>
+                </div>
+                <div class="card-body my-3">
+                    <h3 class="card-title statusSize">{{accepted}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3 color-1">
                 <div class="card-header">
                     <h5 class="card-title statusSize">Order Pending</h5>
                 </div>
@@ -40,6 +64,7 @@
             </div>
         </div>
     </div>
+    
 </div>
 
 
@@ -47,12 +72,7 @@
     <div class="col-md-5">
         <h4>Customers</h4>
         <div class="card card-body">
-
-            <a href="#" class="btn btn-primary btn-sm btn-block">
-                Create Customer
-            </a>
-            </a>
-            <table class="table table-sm">
+            <table class="table table-striped">
                 <tr>
                     <th>Customer</th>
                     <th>Order</th>
@@ -64,16 +84,16 @@
                 </tr>
                 {% endfor %}
             </table>
+            <a href="#" class="btn btn-primary btn-sm btn-block">
+                Create Customer
+            </a>
         </div>
     </div>
 
     <div class="col-md-7">
         <h4>Last 5 Orders</h4>
         <div class="card card-body">
-            <a href="{% url 'allOrder' %}" class="btn btn-primary btn-sm btn-block">
-                View all Orders
-            </a>
-            <table class="table table-sm">
+            <table class="table table-striped">
                 <tr>
                     <th>Product</th>
                     <th>Date Ordered</th>
@@ -87,6 +107,9 @@
                 </tr>
                 {% endfor %}
             </table>
+            <a href="{% url 'allOrder' %}" class="btn btn-primary btn-sm btn-block">
+                View all Orders
+            </a>
         </div>
     </div>
 </div>
