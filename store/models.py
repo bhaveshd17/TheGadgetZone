@@ -6,11 +6,30 @@ from django.contrib.auth.models import User
 
 class Customer(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=200, null=True)
-    email = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=100, null=True)
+    email = models.EmailField()
+    phone = models.CharField(max_length=10, null=True)
+    password = models.CharField(max_length=500, null=True)
+    conf_password = models.CharField(max_length=500, null=True)
 
     def __str__(self):
         return self.name
+
+    def register(self):
+        self.save()
+
+    @staticmethod
+    def get_user_by_email(email):
+        try:
+            return Customer.objects.get(email=email)
+        except:
+            return False
+
+    def isExists(self):
+        if Customer.objects.filter(email=self.email):
+            return True
+
+        return False
 
 
 class Category(models.Model):
@@ -43,6 +62,7 @@ class Product(models.Model):
         except:
             url = ''
         return url
+
 
 
 class Order(models.Model):

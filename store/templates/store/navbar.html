@@ -12,35 +12,23 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'store' %}">Store</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'addProducts' %}">Add Products</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Mobile & Accessories</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Laptops</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Airpod</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Home Appliances</a>
-          </li>
         </ul>
-
+        <form class="d-flex align-items-center m-auto">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+          <button class="btn btn-outline-primary" id="search-btn" type="submit">Search</button>
+        </form>
         <div class="d-flex mb-2 mb-lg-0">
           <a href="{% url 'cart' %}">
             <img id="cart-icon" src="{% static 'img/cart.png' %}">
           </a>
           <p id="cart-total">{{cartItems}}</p>
-          <a href="#" class="btn btn-warning" id="custom-login-btn">Signin</a>
-          <a href="#" class="btn btn-warning" id="custom-login-btn">Login</a>
+          <!-- <a href="#" class="btn btn-warning" id="custom-login-btn">Signin</a> -->
+          <a href="{% url 'login' %}" class="btn btn-warning" id="custom-login-btn">Login</a>
 
         </div>
 

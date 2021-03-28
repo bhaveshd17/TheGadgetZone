@@ -5,14 +5,13 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.http import JsonResponse
 from .utils import cartData, guestOrder
-from .form import AddProductForm
+from django.contrib.auth.hashers import make_password, check_password
 
 def store(request):
 
 	data = cartData(request)
 	cartItems = data['cartItems']
 
-	# products = Product.objects.all()
 	categoryOfProducts = Product.objects.values('category', 'id')
 	allProducts = []
 	categories = [item['category'] for item in categoryOfProducts]
@@ -20,15 +19,16 @@ def store(request):
 	for category in categoriesC:
 		products = Product.objects.filter(category=category)
 		n = len(products)
-		nSlide = n // 4 + ceil((n / 4) - (n // 4))
+		nSlide = n // 3 + ceil((n / 3) - (n // 3))
 		allProducts.append([products, range(1, nSlide), nSlide])
 
 
-	# allProducts = [[products, nSlide, range(1, nSlide)], [products, nSlide, range(1, nSlide)]]
-	content = {'allProducts':allProducts, 'cartItems':cartItems}
+	content = {
+		'allProducts': allProducts,
+		'cartItems': cartItems,
+		'categories':Category.objects.all(),
 
-	# for p in product:
-	# 	print(p.image.url)
+	}
 	return render(request, 'store/store.html', content)
 
 def cart(request):
@@ -129,14 +129,14 @@ def dashboard(request):
 		'shipping': shipping,
 
 	}
-	return render(request, 'store/dashboard.html', content)
+	return render(request, 'admin/dashboard.html', content)
 
 def allOrder(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
 	orderItems = OrderItem.objects.all().order_by("-date")
 	content = {'cartItems':cartItems, 'orderItems':orderItems}
-	return render(request, 'store/allOrder.html', content)
+	return render(request, 'admin/allOrder.html', content)
 
 def addProducts(request):
 	data = cartData(request)
@@ -161,7 +161,15 @@ def addProducts(request):
 		return redirect('/')
 
 	content = {'cartItems':cartItems, 'categories':categories}
-	return render(request, 'store/product_form.html', content)
+	return render(request, 'admin/product_form.html', content)
+
+def addCategory(request):
+	if request.method == 'POST':
+		category = request.POST.get('category')
+		return redirect('/')
+
+	return redirect('/')
+
 
 
 def acceptBtn(request):
@@ -219,4 +227,100 @@ def orderDelivered(request):
 	cartItems = data['cartItems']
 	orderItems = OrderItem.objects.filter(status="Delivered")
 	content = {'cartItems':cartItems, 'orderItems':orderItems}
-	return render(request, 'store/deliveredOrder.html', content)
+	return render(request, 'admin/deliveredOrder.html', content)
+
+def showProducts(request):
+	data = cartData(request)
+	cartItems = data['cartItems']
+	categories = Category.objects.all()
+	cat_id = request.GET.get('category')
+	if cat_id:
+		products = Product.objects.filter(category=cat_id)
+		cat_name = Category.objects.get(id=cat_id)
+	else:
+		products = Product.objects.all()
+		cat_name = "All"
+	content = {
+		'cartItems': cartItems,
+		'products':products,
+		'categories':categories,
+		'cat_name':cat_name
+	}
+	return render(request, 'store/showProducts.html', content)
+
+def login(request):
+	if request.method == 'GET':
+		return render(request, 'authentication/login.html')
+
+	else:
+		email = request.POST.get('email')
+		password = request.POST.get('password')
+		customer = Customer.get_user_by_email(email)
+
+		print(email, password)
+
+		error_message = None
+		if customer:
+			flag = check_password(password, customer.password)
+			if flag:
+				return redirect("store")
+			else:
+				error_message = "Email or Password Does not Exist"
+		else:
+			error_message = "Email or Password Does not exist"
+		return render(request, 'authentication/login.html', {'error' : error_message})
+
+
+def signup(request):
+	if request.method == 'GET':
+		return render(request, 'authentication/signup.html')
+	else:
+		postData = request.POST
+		name = postData.get('name')
+		email = postData.get('email')
+		phone = postData.get('phone')
+		password = postData.get('password')
+		conf_password = postData.get('conf_password')
+		# validation
+		value = {
+			'name': name,
+			'email': email,
+			'phone': phone,
+		}
+
+		error_message = None
+
+		user = Customer(name= name,
+					 email=email,
+					 phone=phone,
+					 password=password,
+					 conf_password=conf_password)
+
+		if (not email):
+			error_message = "Email is Required..!"
+		elif (not name):
+			error_message = "Name is required..!"
+		elif not phone:
+			error_message = "Phone Number Required..!"
+		elif len(phone) < 10:
+			error_message="Phone Number must be 10 digit long"
+		elif len(password)<6:
+			error_message = "Password must be more than 6 character"
+		elif conf_password != password:
+			error_message = "Password is not same..! please try again"
+		elif user.isExists():
+			error_message = 'Email ID is already register ! Go to login page'
+
+	if not error_message:
+		user.password= make_password(user.password)
+		user.conf_password = make_password(user.conf_password)
+		user.register()
+		return redirect("store")
+
+	else:
+		data = {
+				'error': error_message,
+				'values': value
+			}
+		return render(request, 'authentication/signup.html', data)
+

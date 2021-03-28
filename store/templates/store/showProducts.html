@@ -1,0 +1,53 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+
+{%block body%}
+<div class="row p-0">
+   <div class="col-md-3 mt-5">
+    <div class="card card-body vh-100" style="width: 18rem;">
+            
+        <div class="card-title text-muted text-center fs-5">Categories</div>
+        <ul class="list-group list-group-flush text-center">
+            <li class="list-group-item"><a href="{% url 'showProducts' %}" class="fs-6">All Products</a></li>
+            {% for category in categories %}
+            <li class="list-group-item"><a href="?category={{category.id}}" class="fs-6">{{category}}</a></li>
+            {% endfor %}
+          </ul>
+    </div>
+   </div>
+
+   <div class="col-md-9">
+       <h4 class="text-center mt-3">{{cat_name}} Products</h4>
+    <div class="row">
+        {% for product in products %}
+    <div class="col-md-4 my-4">
+        <div class="card" style="width: 18rem;">
+            <img src="{{product.ImageUrl}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                <div class="d-flex flex-column">
+                    <h4 style="font-size: 15px; color: green;"><strong>Price: &#8377;
+                            {{product.discountPrice|floatformat:2}}</strong></h4>
+                    <h4 style="font-size: 15px; color: #383838;"><del>M.R.P.: &#8377;
+                            {{product.price|floatformat:2}}</del></h4>
+
+                    <h4 style="font-size: 15px;"><strong>Discount: {{product.rate}}% </strong><span
+                            style="color: #b32e1c;">(save &#8377; {{product.savePrice}})</span></h4>
+                </div>
+                <div class="my-2">
+                    <button data-product="{{product.id}}" data-action="add"
+                        class="btn btn-outline-warning add-btn update-cart">
+                        Add to Cart
+                    </button>
+                    <a class="btn btn-outline-primary" href="#">View</a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    {%endfor%}
+    </div>
+   </div>
+</div>
+
+{%endblock body%}

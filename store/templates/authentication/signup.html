@@ -1,0 +1,73 @@
+{% extends 'authentication/basic.html' %}
+{% load static %}
+{% block body %}
+
+<div class="container">
+   <div class="row my-3">
+    <div class="col-sm-6 offset-sm-3">
+     <h3>Customer Registration</h3>
+     <hr>
+  
+     <form action="" method="POST" novalidate class="shadow p-5">
+         
+       {% csrf_token %}
+
+       {% if error %}
+       <div class="alert alert-danger" role="alert">
+        {{error}}
+      </div>
+       {% endif %}
+
+       <!--Name-->
+      <div class="form-floating mb-3">
+        <input type="text" name="name" value="{{values.name}}" class="form-control" id="floatingInput" placeholder="name">
+        <label for="floatingInput">Your Name</label> 
+      </div>
+
+       <!--Email-->
+      <div class="form-floating mb-3">
+         <input type="email" name="email" value="{{values.email}}" class="form-control" id="floatingInput" placeholder="name@example.com">
+         <label for="floatingInput">Email address</label> 
+       </div>
+       
+
+       <!--Phone number-->
+       <div class="form-floating mb-3">
+        <input type="text" name="phone" value="{{values.phone}}" class="form-control" id="floatingInput" placeholder="Phone Number">
+        <label for="floatingInput">Phone number</label>
+      </div>
+
+       <!--Password-->
+       <div class="form-floating">
+         <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+         <label for="floatingPassword">Password</label>
+       </div>
+       <br>
+
+       <!--c Password-->
+       <div class="form-floating">
+        <input type="password" name="conf_password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Confirm Password</label>
+      </div>
+       <br>
+
+       
+      <div class="text-center">
+       <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      <br>
+      <div class="text-center text-center fw-bold"><small>Existing User ? <a href="/login"
+         class="text-primary">Login Now</a> </small></div>
+      {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+      <p class="alert alert-danger my-3">{{error}}</p>
+      {% endfor %}
+      {% endif %}
+     </form>
+    </div>
+   </div>
+  </div>
+
+
+
+{% endblock body %}
