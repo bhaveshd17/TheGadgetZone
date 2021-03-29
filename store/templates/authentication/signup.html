@@ -2,72 +2,69 @@
 {% load static %}
 {% block body %}
 
-<div class="container">
-   <div class="row my-3">
-    <div class="col-sm-6 offset-sm-3">
-     <h3>Customer Registration</h3>
-     <hr>
-  
-     <form action="" method="POST" novalidate class="shadow p-5">
-         
-       {% csrf_token %}
 
-       {% if error %}
-       <div class="alert alert-danger" role="alert">
-        {{error}}
+<div class="row my-5">
+  <div class="col-sm-6 offset-sm-3">
+    <div class="card shadow" style="max-width: 500px;">
+      <div class="card-body">
+        <div class="cart-title">
+          <h4 class="text-center">Registration</h4>
+        </div>
+        <form action="" method="POST" class="needs-validation" novalidate class="p-3">
+          {% csrf_token %}
+
+          {% if form.errors %}
+          <div class="alert alert-danger" role="alert">
+            {{form.errors}}
+          </div>
+          {% endif %}
+
+          <!--Name-->
+          <div class="form-floating mb-3">
+            {{form.username}}
+            <label for="name">Username</label>
+          </div>
+
+          <!--Email-->
+          <div class="form-floating mb-3">
+            {{form.email}}
+            <label for="email">Email address</label>
+          </div>
+
+          <!--Password-->
+          <div class="form-floating mb-3">
+            {{form.password1}}
+            <label for="password">Password</label>
+          </div>
+
+          <!--c Password-->
+          <div class="form-floating mb-4">
+            {{form.password2}}
+            <label for="conf_password">Confirm Password</label>
+          </div>
+
+          <div class="mb-3 d-grid">
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+          <div class="text-center text-center fw-bold"><small>Existing User ? <a href="{% url 'login' %}"
+                class="text-primary">Login Now</a> </small></div>
+        </form>
+
       </div>
-       {% endif %}
-
-       <!--Name-->
-      <div class="form-floating mb-3">
-        <input type="text" name="name" value="{{values.name}}" class="form-control" id="floatingInput" placeholder="name">
-        <label for="floatingInput">Your Name</label> 
-      </div>
-
-       <!--Email-->
-      <div class="form-floating mb-3">
-         <input type="email" name="email" value="{{values.email}}" class="form-control" id="floatingInput" placeholder="name@example.com">
-         <label for="floatingInput">Email address</label> 
-       </div>
-       
-
-       <!--Phone number-->
-       <div class="form-floating mb-3">
-        <input type="text" name="phone" value="{{values.phone}}" class="form-control" id="floatingInput" placeholder="Phone Number">
-        <label for="floatingInput">Phone number</label>
-      </div>
-
-       <!--Password-->
-       <div class="form-floating">
-         <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
-         <label for="floatingPassword">Password</label>
-       </div>
-       <br>
-
-       <!--c Password-->
-       <div class="form-floating">
-        <input type="password" name="conf_password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Confirm Password</label>
-      </div>
-       <br>
-
-       
-      <div class="text-center">
-       <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-      <br>
-      <div class="text-center text-center fw-bold"><small>Existing User ? <a href="/login"
-         class="text-primary">Login Now</a> </small></div>
-      {% if form.non_field_errors %}
-      {% for error in form.non_field_errors %}
-      <p class="alert alert-danger my-3">{{error}}</p>
-      {% endfor %}
-      {% endif %}
-     </form>
     </div>
-   </div>
   </div>
+</div>
 
+<script>
+  let form_fields = document.getElementsByTagName('input')
+  form_fields[1].placeholder='username';
+  form_fields[2].placeholder='name@gmail.com';
+  form_fields[3].placeholder='Password';
+  form_fields[4].placeholder='Re-enter Password';
 
-
+  for(let field in form_fields){
+    form_fields[field].className += 'form-control';
+  }
+  document.getElementById("id_email").required = true
+</script>
 {% endblock body %}

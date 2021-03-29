@@ -34,7 +34,9 @@
             
             <div class="card-title text-muted text-center fs-5">Categories</div>
             <ul class="list-group list-group-flush text-center">
+                {% if request.user.is_staff %}
                 <li class="list-group-item"><a href="{% url 'showProducts' %}" class="fs-6">All Products</a></li>
+                {% endif %}
                 {% for category in categories %}
                 <li class="list-group-item"><a href="" class="fs-6">{{category}}</a></li>
                 {% endfor %}

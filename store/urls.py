@@ -8,6 +8,8 @@ urlpatterns = [
     path('update_item/', views.updateItem, name="update_item"),
 	path('process_order/', views.processOrder, name="process_order"),
 	path('showProducts/', views.showProducts, name="showProducts"),
+	path('userPage/', views.userPage, name="userPage"),
+	path('userOrderDetails/', views.userOrderDetails, name="userOrderDetails"),
 
 	path('dashboard/', views.dashboard, name="dashboard"),
 	path('dashboard/allOrder/', views.allOrder, name="allOrder"),
@@ -19,7 +21,8 @@ urlpatterns = [
 	path('dashboard/allOrder/remove', views.removeOrderBtn, name="remove"),
 	path('dashboard/orderDelivered', views.orderDelivered, name="orderDelivered"),
 
-	path('login/', views.login, name="login"),
+	path('login/', views.loginPage, name="login"),
 	path('signup/', views.signup, name="signup"),
+	path('logout/', views.logoutUser, name="logout"),
 
 ]

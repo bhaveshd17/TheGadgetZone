@@ -1,0 +1,48 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+{% block body %}
+<style>
+    .profile-image{
+        max-width: 200px;
+        max-height: 200px;
+        margin: 0 auto;
+        border-radius: 50%;
+    }
+</style>
+
+<div class="row my-5">
+    <div class="col-md-6 offset-md-3">
+        <div class="card card-body">
+            <a class="btn btn-outline-warning" href="{% url 'store' %}">&#x2190; Contiue Shopping</a>
+            <h4 class="text-center my-3">User Information</h4>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    {{form.name}}
+                    <label for="name">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form.email}}
+                    <label for="email">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form.phone}}
+                    <label for="phone">Phone Number</label>
+                </div>
+                <div class="mb-3 d-grid">
+                    <button class="btn btn-primary" type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    let form_fields = document.getElementsByTagName('input')
+    for(let field in form_fields){
+      form_fields[field].className += ' form-control'  
+    }
+  </script>
+
+{% endblock body %}

@@ -1,0 +1,31 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+
+
+{%block body%}
+<div class="my-3">
+<h3 class="text-center mb-3">Your Orders</h3>
+{% for orderQuery in order_list %}
+{% for orderItem in orderQuery %}
+<div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-3">
+        <img src="{{orderItem.product.ImageUrl}}" style="height: 150px; width: 199px;" alt="...">
+      </div>
+      <div class="col-md-9">
+        <div class="card-body">
+          <h4 class="card-title">{{orderItem.product.name}}</h4>
+          <p class="card-text"><span class="text-muted">Order placed at {{orderItem.date}}</span></p>
+          <p class="card-text"><span style="color: green;">&#8377  {{orderItem.product.discountPrice}}</span></p>
+          <a href="" class="btn btn-primary">View</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% endfor %}
+
+</div>
+
+{%endblock body %}
