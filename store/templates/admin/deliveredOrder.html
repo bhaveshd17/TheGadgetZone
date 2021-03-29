@@ -19,7 +19,7 @@
             <div class="col-md-9">
                 <div class="card-body">
                     <h4 class="card-title">{{orderItem.product.name}}</h4>
-                    <p class="card-text"><span class="text-muted">{{orderItem.date}}</span></p>
+                    <p class="card-text"><span class="text-muted">- placed by {{orderItem.order.customer}} at {{orderItem.date}}</span></p>
                     <p class="card-text"><span style="color: green;">&#8377 {{orderItem.product.discountPrice}}</span>
                     </p>
                     <p class="card-text"><span style="color: #a70e08ef; font-weight: 500;">Current Status :

@@ -1,4 +1,6 @@
 from decimal import Decimal
+
+from cloudinary.models import CloudinaryField
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
@@ -46,7 +48,7 @@ class Product(models.Model):
     rate = models.PositiveIntegerField()
     discountPrice = models.DecimalField(max_digits=16, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     digital = models.BooleanField(default=False, null=True, blank=False)
-    image = models.ImageField(null=True, blank=True)
+    image = CloudinaryField('image')
 
     def __str__(self):
         return self.name
@@ -85,6 +87,11 @@ class Order(models.Model):
         order_items = self.orderitem_set.all()
         total = sum([item.get_total for item in order_items])
         return total
+    @property
+    def get_original_cart_total(self):
+        order_items = self.orderitem_set.all()
+        total = sum([item.get_original_total for item in order_items])
+        return total
 
     @property
     def get_cart_items(self):
@@ -113,6 +120,11 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.product.discountPrice * self.quantity
         return total
+    @property
+    def get_original_total(self):
+        total = self.product.price * self.quantity
+        return total
+
 
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)

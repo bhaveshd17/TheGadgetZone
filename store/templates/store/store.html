@@ -38,7 +38,7 @@
                 <li class="list-group-item"><a href="{% url 'showProducts' %}" class="fs-6">All Products</a></li>
                 {% endif %}
                 {% for category in categories %}
-                <li class="list-group-item"><a href="" class="fs-6">{{category}}</a></li>
+                <li class="list-group-item"><a href="?category={{category.id}}" class="fs-6">{{category}}</a></li>
                 {% endfor %}
               </ul>
         </div>

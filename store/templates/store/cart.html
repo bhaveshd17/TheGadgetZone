@@ -2,34 +2,13 @@
 {% load static %}
 
 {%block body%}
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box-element">
-
-            <a  class="btn btn-outline-primary" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
-
-            <br>
-            <br>
-            <table class="table">
-                <tr>
-                    <th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
-                    <th><h5>Total: <strong>INR {{order.get_cart_total|floatformat:2}}</strong></h5></th>
-                    {% if order.get_cart_items > 0 %}
-                    <th>
-                        <a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
-                    </th>
-                    {% endif %}
-                </tr>
-            </table>
-
-        </div>
-
-        <br>
+<div class="row mt-5">
+    <div class="col-md-9">
         <div class="box-element">
             <div class="cart-row">
                 <div style="flex:1"></div>
-                <div style="flex:4"><strong>Item</strong></div>
-                <div style="flex:1"><strong>Price (INR)</strong></div>
+                <div style="flex:3"><strong>Item</strong></div>
+                <div style="flex:2" class="text-center"><strong>Price (INR)</strong></div>
                 <div style="flex:1"><strong>Quantity</strong></div>
                 <div style="flex:1"><strong>Total (INR)</strong></div>
             </div>
@@ -37,8 +16,8 @@
             {% for item in items %}
             <div class="cart-row">
                 <div style="flex:1"><img class="row-image" src="{{item.product.ImageUrl}}"></div>
-                <div style="flex:4"><p>{{item.product.name}}</p></div>
-                <div style="flex:1"><p>{{item.product.discountPrice|floatformat:2}}</p></div>
+                <div style="flex:3"><p>{{item.product.name}}</p></div>
+                <div style="flex:2" class="text-center"><p>{{item.product.discountPrice|floatformat:2}}</p></div>
                 <div style="flex:1">
                     <p class="quantity">{{item.quantity}}</p>
                     <div class="quantity">
@@ -50,8 +29,44 @@
                 <div style="flex:1"><p>{{item.get_total}}</p></div>
             </div>
             {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-body">
+            <a  class="btn btn-outline-primary" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+            {% if order.get_cart_items > 0 %}
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Items :</td>
+                    <td><strong>{{order.get_cart_items}}</strong></td>
+                </tr>
+                <tr>
+                    <td>M. R. P. :</td>
+                    <td><strong class="text-muted"><del>&#8377 {{order.get_original_cart_total}}</del></strong></td>
+                </tr>
+                <tr>
+                    <td>Total Save :</td>
+                    <td><strong>&#8377 {{save}}</strong></td>
+                </tr>
+                <tr>
+                    <td>Delivery :</td>
+                    <td><strong>&#8377 60</strong></td>
+                </tr>
+                <tr>
+                    <td>Total :</td>
+                    <td><strong>&#8377 {{order.get_cart_total|floatformat:2}}</strong></td>
+                </tr>
+            </table>
+            <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+            {% endif %}
 
         </div>
+
     </div>
 </div>
 {%endblock body%}
