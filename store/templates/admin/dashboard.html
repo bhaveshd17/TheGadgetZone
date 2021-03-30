@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
 
@@ -75,17 +75,16 @@
             <table class="table table-striped">
                 <tr>
                     <th>Customer</th>
-                    <th>Order</th>
+                    <th>Email</th>
                 </tr>
                 {% for customer in customers %}
                 <tr>
                     <td>{{customer.name}}</td>
                     <td>{{customer.email}}</td>
-                </tr>
                 {% endfor %}
             </table>
-            <a href="#" class="btn btn-primary btn-sm btn-block">
-                Create Customer
+            <a href="{% url 'allCustomers' %}" class="btn btn-primary btn-sm d-grid">
+                View all Customer
             </a>
         </div>
     </div>

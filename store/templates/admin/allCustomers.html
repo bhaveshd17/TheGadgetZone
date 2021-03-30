@@ -1,0 +1,62 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+
+
+{%block body%}
+<div class="my-3">
+    <div class="card mb-3">
+        <div class="card-body">
+            <table class="table table-striped">
+                <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th></th>
+                </tr>
+                {% for customer in customers %}
+                {% if customer.user.username != 'admin' %}
+                <tr>
+                    <td>{{customer.user.username}}</td>
+                    <td>{{customer.name}}</td>
+                    <td>{{customer.email}}</td>
+                    <td>{{customer.phone}}</td>
+                    <td>
+                        <p class="btn btn-danger d-grid" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{customer.user.username}}">
+                            Delete
+                        </p>
+
+                    </td>
+                </tr>
+                <!-- Modal -->
+                <div class="modal fade" id="{{customer.user.username}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Label">Confirmation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                               Do you really want to permanently delete your account
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                <form action="{% url 'remove_customer' customer.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{%endblock body %}

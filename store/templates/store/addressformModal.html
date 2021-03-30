@@ -1,0 +1,36 @@
+<!-- modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title text-center" id="staticBackdropLabel">Address Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/addAddress/" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="address" id="address" placeholder="Address">
+                </div>
+                <div class="mb-3">
+
+                    <input class="form-control" type="text" name="city" placeholder="City">
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="state" placeholder="State">
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="zipcode" placeholder="Zip code">
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="country" placeholder="Country">
+                </div>
+                <div class="mb-3 d-grid">
+                    <button class="btn btn-success" type="submit">Add Address</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

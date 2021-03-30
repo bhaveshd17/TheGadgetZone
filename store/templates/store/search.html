@@ -2,24 +2,20 @@
 {% load static %}
 
 {%block body%}
-<div class="row p-0">
-   <div class="col-md-3 mt-5">
-    <div class="card card-body vh-100" style="width: 18rem;">
-            
-        <div class="card-title text-muted text-center fs-5">Categories</div>
-        <ul class="list-group list-group-flush text-center">
-            {% for category in categories %}
-            <li class="list-group-item"><a href="?category={{category.id}}" class="fs-6">{{category}}</a></li>
-            {% endfor %}
-          </ul>
-    </div>
-   </div>
 
-   <div class="col-md-9">
-       <h4 class="text-center mt-3">{{cat_name}} Products</h4>
-    <div class="row">
-        {% for product in products %}
-    <div class="col-md-4 my-4">
+{% if products|length < 1 %}
+<div class="card text-center mt-5">
+    <div class="card-body">
+      <h5 class="card-title">No result for "<b>{{query}}</b>"</h5>
+      <p class="card-text">Try checking your spelling or use more general term.</p>
+      <a href="{% url 'store' %}" class="btn btn-outline-primary">Continue Shopping</a>
+    </div>
+</div>
+{% else %}
+<h4 class="text-center mt-3">Showing result for <b>"{{query}}"</b></h4>
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-3 my-4">
         <div class="card" style="width: 18rem;">
             <img src="{{product.ImageUrl}}" class="card-img-top" alt="...">
             <div class="card-body">
@@ -41,12 +37,12 @@
                     <a class="btn btn-outline-primary" href="#">View</a>
                 </div>
             </div>
-            
+
         </div>
     </div>
     {%endfor%}
-    </div>
-   </div>
 </div>
+{% endif %}
+
 
 {%endblock body%}

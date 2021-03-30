@@ -65,6 +65,17 @@ def cartData(request):
 
     return {'cartItems':cartItems, 'order':order, 'items':items, 'save': save}
 
+def showProductsData(request):
+    categories = Category.objects.all()
+    cat_id = request.GET.get('category')
+    if cat_id:
+        products = Product.objects.filter(category=cat_id)
+        cat_name = Category.objects.get(id=cat_id)
+    else:
+        products = Product.objects.all()
+        cat_name = "All"
+    return {'products': products, 'categories': categories, 'cat_name': cat_name}
+
 
 # def guestOrder(request, data):
 #     # print('User is not logged in')

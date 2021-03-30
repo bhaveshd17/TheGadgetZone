@@ -108,12 +108,6 @@ a{
 	width: 100px;
 }
 
-.form-field{
-	width:250px;
-	display: inline-block;
-	padding: 5px;
-}
-
 .cart-row{
 	display: flex;
     align-items: flex-stretch;

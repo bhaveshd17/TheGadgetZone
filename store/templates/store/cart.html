@@ -2,6 +2,7 @@
 {% load static %}
 
 {%block body%}
+{% if order.get_cart_items > 0 %}
 <div class="row mt-5">
     <div class="col-md-9">
         <div class="box-element">
@@ -35,7 +36,6 @@
     <div class="col-md-3">
         <div class="card card-body">
             <a  class="btn btn-outline-primary" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
-            {% if order.get_cart_items > 0 %}
             <table class="table">
                 <tr>
                     <th></th>
@@ -63,10 +63,23 @@
                 </tr>
             </table>
             <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
-            {% endif %}
 
         </div>
 
     </div>
 </div>
+{% else %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card text-center my-5">
+            <div class="card-header">
+              You have no item in cart
+            </div>
+            <div class="card-body">
+                <a  class="btn btn-outline-primary" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+            </div>
+          </div>
+    </div>
+</div>
+{% endif %}
 {%endblock body%}

@@ -20,8 +20,8 @@
           </li>
         </ul>
         {% endif %}
-        <form class="d-flex align-items-center m-auto">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+        <form action="/search" method="GET" class="d-flex align-items-center m-auto">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput" name="query">
           <button class="btn btn-outline-primary" id="search-btn" type="submit">Search</button>
         </form>
         <div class="d-flex mb-2 mb-lg-0">
