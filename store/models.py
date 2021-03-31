@@ -48,6 +48,7 @@ class Product(models.Model):
     rate = models.PositiveIntegerField()
     discountPrice = models.DecimalField(max_digits=16, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     digital = models.BooleanField(default=False, null=True, blank=False)
+    description = models.CharField(max_length=1000, null=True, blank=True)
     image = CloudinaryField('image')
 
     def __str__(self):

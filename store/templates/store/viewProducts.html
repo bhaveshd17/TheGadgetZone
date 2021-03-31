@@ -1,0 +1,38 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+
+{%block body%}
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <img src="{{product.ImageUrl}}" class="card-img-top" alt="...">
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="card card-body">
+            <h5 class="card-title mb-3">{{product.name}}</h5>
+            <div class="d-flex flex-column mb-3">
+                <h4 style="font-size: 15px; color: green;"><strong>Price: &#8377;
+                        {{product.discountPrice|floatformat:2}}</strong></h4>
+                <h4 style="font-size: 15px; color: #383838;"><del>M.R.P.: &#8377;
+                        {{product.price|floatformat:2}}</del></h4>
+
+                <h4 style="font-size: 15px;"><strong>Discount: {{product.rate}}% </strong><span
+                        style="color: #b32e1c;">(save &#8377; {{product.savePrice}})</span></h4>
+                <p class="card-text">Delivery expected : <strong> {{date}}</strong></p>
+            </div>
+            <p class="card-text mt-3 text-muted">Description :-</p>
+            <p class="card-text mb-3" style="font-weight: 400;">{{product.description}}</p>
+            <a data-product="{{product.id}}" data-action="add" class="btn btn-warning add-btn update-cart">Add To Cart</a>
+        </div>
+    </div>
+</div>
+<div class="row my-3">
+    <div class="col-md-12">
+        <div class="card card-body">
+            <h5 class="cart-title">Review</h5>
+        </div>
+    </div>
+</div>
+{%endblock body%}

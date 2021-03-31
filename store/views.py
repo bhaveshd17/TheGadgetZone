@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 import json
 from math import ceil
 from django.contrib.auth import authenticate, login, logout
@@ -104,6 +104,7 @@ def addAddress(request):
 	return redirect('/userPage')
 
 
+
 def store(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
@@ -137,8 +138,9 @@ def search(request):
 		products = Product.objects.none()
 	else:
 		products = Product.objects.filter(name__icontains=query)
+		# categories = Category.objects.filter(category__icontains=query)
 		# productDesc = Product.objects.filter(description=query)
-		# products = productsName.union(productDesc)
+		# products = categories.union(productsName)
 	content = {
 		'cartItems': cartItems,
 		'products':products,
@@ -148,6 +150,8 @@ def search(request):
 	}
 
 	return render(request, 'store/search.html', content)
+
+
 def showProducts(request):
 	data = cartData(request)
 	productData = showProductsData(request)
@@ -163,6 +167,17 @@ def showProducts(request):
 	}
 	return render(request, 'store/showProducts.html', content)
 
+def viewProducts(request, pk):
+	data = cartData(request)
+	cartItems = data['cartItems']
+	product = Product.objects.get(id=pk)
+	date = (datetime.now()+ timedelta(days=6)).strftime('%d %A')
+	content = {
+		'cartItems': cartItems,
+		'product':product,
+		'date':date
+	}
+	return render(request, 'store/viewProducts.html', content)
 
 def cart(request):
 
@@ -193,6 +208,12 @@ def checkout(request):
 	content = {'items':items, 'order':order, 'cartItems':cartItems, 'address':address}
 	return render(request, 'store/checkout.html', content)
 
+@login_required(login_url='login')
+def thankYou(request):
+	data = cartData(request)
+	cartItems = data['cartItems']
+	content = {'cartItems':cartItems}
+	return render(request, 'store/thankyou.html', content)
 
 
 def updateItem(request):

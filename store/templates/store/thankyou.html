@@ -1,0 +1,22 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+
+{%block body%}
+
+<div class="card text-center mt-5">
+    <div class="card-header fs-4">
+       Transaction Completed
+    </div>
+    <div class="card-body my-3">
+      <h5 class="card-title">Thank you for shopping from The Gadgets Zone</h5>
+      <p class="card-text">Have a nice day!</p>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'store' %}" class="btn btn-outline-primary mx-3">Continue Shopping</a>
+            <a href="#" class="btn btn-outline-warning mx-3">View Order</a>
+          </div>
+    </div>
+  </div> 
+
+{%endblock body%}
