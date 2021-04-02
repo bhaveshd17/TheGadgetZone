@@ -33,7 +33,14 @@
                     <button class="btn btn-primary" type="submit">Update</button>
                 </div>
             </form>
+            <form action="{% url 'remove_customer' customer.id %}" method="post">
+                {% csrf_token %}
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
         </div>
+
     </div>
 
     <div class="col-md-6">
@@ -45,6 +52,7 @@
                     {% for add in address %}
                     <li class="list-group-item">
                         {{add.address}}, {{add.city}}, {{add.zipcode}}, {{add.state}}
+                    <a href="{% url 'remove_address' add.id %}" class="btn btn-outline-danger d-grid btn-sm my-2">Delete</a>
                     </li>
                     {% endfor %}
                 </ul>

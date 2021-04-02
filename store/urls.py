@@ -12,8 +12,13 @@ urlpatterns = [
 	path('showProducts/', views.showProducts, name="showProducts"),
 	path('userPage/', views.userPage, name="userPage"),
 	path('addAddress/', views.addAddress, name="addAddress"),
+	path('remove_address/<str:pk>',views.remove_address, name="remove_address"),
 	path('userOrderDetails/', views.userOrderDetails, name="userOrderDetails"),
+	path('viewOrder/<str:pk>/', views.viewOrder, name="viewOrder"),
 	path('search/', views.search, name='search'),
+
+	path('remove_product/<str:pk>/', views.remove_product, name="remove_product"),
+	path('edit_product/<str:pk>', views.edit_product, name="edit_product"),
 	path('dashboard/', views.dashboard, name="dashboard"),
 	path('dashboard/allOrder/', views.allOrder, name="allOrder"),
 	path('addProducts/', views.addProducts, name="addProducts"),

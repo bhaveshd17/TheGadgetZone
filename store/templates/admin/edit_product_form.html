@@ -1,0 +1,105 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+
+
+{%block body%}
+<div class="row">
+    <h4 class="text-center my-3">Add Product</h4>
+    <div class="col-md-6 offset-md-3">
+        <form action="" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label" for="name">Product Name</label>
+                <input class="form-control" type="text" id="name" name="name" value="{{product.name}}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="price">M. R. P</label>
+                <input class="form-control" type="number" id="price" name="price" value="{{product.price}}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="rate">Discount Rate</label>
+                <input class="form-control" type="number" id="rate" name="rate" value="{{product.rate}}" required>
+            </div>
+            <div class="mb-3">
+                <div class="row p-0">
+                    <div class="col-md-11">
+                        <label class="form-label" for="category">Select Category</label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="{{product.category.id}}" selected>{{product.category.category}}</option>
+                            {% for cat in categories%}
+                            {% if cat.category != product.category.category %}
+                            <option value="{{cat.id}}">{{cat.category}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-1 pt-3 ps-1">
+                        <p class="fs-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                            style="color: green; cursor: pointer;">&plus;</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" name="description" id="description" cols="30" rows="10"
+                    required>{{product.description}}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="digital">Digital</label>
+                <select class="form-select" id="digital" name="digital" required>
+                    <option value="False" selected>No</option>
+                    <option value="True">Yes</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="image" name="image" required>
+                    <label class="input-group-text" for="image">Image(s)</label>
+                </div>
+            </div>
+            {% if product.ImageUrl %}
+            <div class="mb-3">
+                <img src="{{product.ImageUrl}}" style="width:100px; height:100px;" class="img-thumbnail" alt="">
+                <div class="form-check-inline">
+                    <input type="checkbox" id="delete_image" name="delete_image" value="{{product.image}}">
+                </div>
+                <label for="delete_image">Delete?</label>
+            </div>
+            {% endif %}
+
+            <div class="mb-3 d-grid">
+                <button class="btn btn-success" type="submit">Add Product</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+
+<!-- modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="staticBackdropLabel">Add Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="addCategory" method="post" class="needs-validation" novalidate
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label" for="category">Category</label>
+                        <input class="form-control" type="text" id="category" name="category" required>
+                    </div>
+                    <div class="mb-3 d-grid">
+                        <button class="btn btn-success" type="submit">Add Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,4 +1,6 @@
 import json
+from math import ceil
+
 from .models import *
 
 def cookiesCart(request):
@@ -76,10 +78,26 @@ def showProductsData(request):
         cat_name = "All"
     return {'products': products, 'categories': categories, 'cat_name': cat_name}
 
-
+def productFormData(request):
+    product = Product()
+    product.name = request.POST.get('name')
+    price = float(request.POST.get('price'))
+    rate = int(request.POST.get('rate'))
+    savePrice = ceil((price * rate) / 100)
+    discountPrice = price - savePrice
+    product.price = price
+    product.rate = rate
+    product.savePrice = savePrice
+    product.description = request.POST.get('description')
+    product.discountPrice = discountPrice
+    categoryId = request.POST.get('category')
+    product.category = Category.objects.get(id=categoryId)
+    product.digital = request.POST.get('digital')
+    product.image = request.FILES.get('image')
+    return product
 # def guestOrder(request, data):
-#     # print('User is not logged in')
-#     # print('cookies', request.COOKIES)
+#     print('User is not logged in')
+#     print('cookies', request.COOKIES)
 #     name = data['form']['name']
 #     email = data['form']['email']
 #     cookiesData = cookiesCart(request)
@@ -105,3 +123,4 @@ def showProductsData(request):
 #         )
 #
 #     return customer, order
+

@@ -1,26 +1,28 @@
 from datetime import datetime, timedelta
 import json
 from math import ceil
+import cloudinary.uploader
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, HttpResponse
 from .models import *
 from django.http import JsonResponse
-from .utils import cartData, showProductsData
+from .utils import cartData, showProductsData, productFormData, cookiesCart
 from django.contrib import messages
 from .form import UserCreationForm, CustomerForm
 from django.contrib.auth.decorators import login_required
-from .decorators import unauthenticated_user, allowed_users
+from .decorators import unauthenticated_user, allowed_users, allowed_checkout
 
 
 @unauthenticated_user
 def loginPage(request):
+	print(request.COOKIES)
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
-			messages.success(request, f"{user} logged in successfully")
 			login(request, user)
+			messages.success(request, f"{user} logged in successfully")
 			return redirect('/')
 		else:
 			messages.error(request, 'Wrong username or password')
@@ -59,11 +61,15 @@ def userPage(request):
 	cartItems = data['cartItems']
 	orders = request.user.customer.order_set.all()
 	customer = request.user.customer
+	user = User.objects.get(customer=customer)
 	form = CustomerForm(instance=customer)
 	if request.method == 'POST':
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
+		email = request.POST.get('email')
 		if form.is_valid():
 			form.save()
+			user.email = email
+			user.save()
 			messages.success(request, "Successfully update information")
 			return redirect('/')
 	address = UserAddress.objects.filter(customer=customer)
@@ -71,6 +77,7 @@ def userPage(request):
 
 		'orders': orders,
 		'cartItems':cartItems,
+		'customer':customer,
 		'form':form,
 		'address':address
 	}
@@ -89,6 +96,12 @@ def userOrderDetails(request):
 	content = {'cartItems': cartItems, 'order_list':order_list}
 	return render(request, 'store/userOrderDetails.html', content)
 
+@login_required(login_url='login')
+def viewOrder(request, pk):
+	data = cartData(request)
+	cartItems = data['cartItems']
+	content = {'cartItems':cartItems}
+	return render(request, 'store/viewOrder.html', content)
 
 @login_required(login_url='login')
 def addAddress(request):
@@ -101,8 +114,17 @@ def addAddress(request):
 	userAddress.customer = request.user.customer
 	userAddress.save()
 	messages.success(request, 'Address added successfully')
-	return redirect('/userPage')
+	if '/userPage/' in request.META.get('HTTP_REFERER'):
+		return redirect('/userPage')
+	else:
+		return redirect('/checkout')
 
+@login_required(login_url='login')
+def remove_address(request, pk):
+	address = UserAddress.objects.get(id=pk)
+	address.delete()
+	messages.success(request, 'Address removed successfully')
+	return redirect('/userPage')
 
 
 def store(request):
@@ -125,6 +147,22 @@ def store(request):
 		'categories':Category.objects.all(),
 
 	}
+	if request.COOKIES and request.user.is_authenticated:
+		customer = request.user.customer
+		order = Order.objects.filter(customer=customer).order_by('-id')[0:1].get()
+		cookiesData = cookiesCart(request)
+		itemsCookie = cookiesData['items']
+		for item in itemsCookie:
+			product = Product.objects.get(id=item['product']['id'])
+			OrderItem.objects.create(
+				product=product,
+				order=order,
+				quantity=item['quantity']
+			)
+		response = render(request, 'store/store.html', content)
+		response.delete_cookie('cart')
+		return response
+
 	return render(request, 'store/store.html', content)
 
 def search(request):
@@ -137,10 +175,9 @@ def search(request):
 	if len(query)>78:
 		products = Product.objects.none()
 	else:
-		products = Product.objects.filter(name__icontains=query)
-		# categories = Category.objects.filter(category__icontains=query)
-		# productDesc = Product.objects.filter(description=query)
-		# products = categories.union(productsName)
+		productsName = Product.objects.filter(name__icontains=query)
+		productDesc = Product.objects.filter(description=query)
+		products = productDesc.union(productsName)
 	content = {
 		'cartItems': cartItems,
 		'products':products,
@@ -196,6 +233,7 @@ def cart(request):
 	return render(request, 'store/cart.html', content)
 
 @login_required(login_url='login')
+@allowed_checkout
 def checkout(request):
 
 	data = cartData(request)
@@ -204,7 +242,6 @@ def checkout(request):
 	cartItems = data['cartItems']
 	customer = request.user.customer
 	address = UserAddress.objects.filter(customer=customer)
-
 	content = {'items':items, 'order':order, 'cartItems':cartItems, 'address':address}
 	return render(request, 'store/checkout.html', content)
 
@@ -240,7 +277,7 @@ def updateItem(request):
 @login_required(login_url='login')
 def processOrder(request):
 	# # print(request.body)
-	transaction_id = datetime.datetime.now().timestamp()
+	transaction_id = datetime.now().timestamp()
 	data = json.loads(request.body)
 	if request.user.is_authenticated:
 		customer = request.user.customer
@@ -320,20 +357,7 @@ def addProducts(request):
 	cartItems = data['cartItems']
 	categories = Category.objects.all()
 	if request.method == 'POST':
-		product = Product()
-		product.name = request.POST.get('name')
-		price = float(request.POST.get('price'))
-		rate = int(request.POST.get('rate'))
-		savePrice = ceil((price*rate)/100)
-		discountPrice = price - savePrice
-		product.price = price
-		product.rate = rate
-		product.savePrice = savePrice
-		product.discountPrice = discountPrice
-		categoryId = request.POST.get('category')
-		product.category = Category.objects.get(id=categoryId)
-		product.digital = request.POST.get('digital')
-		product.image = request.FILES.get('image')
+		product = productFormData(request)
 		product.save()
 		messages.success(request, f"Successfully added {product}")
 		return redirect('/')
@@ -441,3 +465,32 @@ def remove_customer(request, pk):
 	user.delete()
 	messages.success(request, f"Successfully delete {username}'s account from the gadgets zone!")
 	return redirect('/dashboard/allCustomers')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def remove_product(request, pk):
+	product = Product.objects.get(id=pk)
+	orderItem = OrderItem.objects.get(product=product)
+	cloudinary.uploader.destroy(product.image.public_id,invalidate=True)
+	orderItem.delete()
+	product.delete()
+	messages.success(request, f"successfully delete product {product}")
+	return redirect('/')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def edit_product(request, pk):
+	data = cartData(request)
+	cartItems = data['cartItems']
+	product = Product.objects.get(id=pk)
+	categories = Category.objects.all()
+	print(product.image)
+	if request.method == 'POST':
+		product = productFormData(request)
+		product.save()
+		delete_image = request.POST.get('delete_image')
+		cloudinary.uploader.destroy(delete_image, invalidate=True)
+		messages.success(request, f"successfully Update product {product}")
+		return redirect('/')
+	content = {'cartItems':cartItems, 'product':product, 'categories':categories}
+	return render(request, 'admin/edit_product_form.html', content)

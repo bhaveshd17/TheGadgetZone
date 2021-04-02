@@ -24,7 +24,11 @@
             </div>
             <p class="card-text mt-3 text-muted">Description :-</p>
             <p class="card-text mb-3" style="font-weight: 400;">{{product.description}}</p>
-            <a data-product="{{product.id}}" data-action="add" class="btn btn-warning add-btn update-cart">Add To Cart</a>
+
+            <a href="{% url 'edit_product' product.id%}" class="btn btn-primary mb-3">Edit</a>
+            <a href="{% url 'remove_product' product.id%}" class="btn btn-danger mb-3">Delete</a>
+            <a data-product="{{product.id}}" data-action="add" class="btn btn-warning add-btn update-cart mb-3">Add To
+                Cart</a>
         </div>
     </div>
 </div>

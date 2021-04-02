@@ -32,8 +32,10 @@ const addCookieItem = (productId, action)=>{
             delete cart[productId]
         }
     }
-    console.log(cart)
-    document.cookie = 'cart=' + JSON.stringify(cart) + "; domain=;path=/"
+    const d = new Date();
+    d.setTime(d.getTime() + (20*24*60*60*1000));
+    const expires = "expires="+ d.toUTCString();
+    document.cookie = 'cart=' + JSON.stringify(cart) + "; domain=;path=/;"+expires;
     location.reload()
 }
 
