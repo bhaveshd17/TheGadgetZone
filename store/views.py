@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, HttpResponse
 from .models import *
 from django.http import JsonResponse
+
+from .send_email import sendMail
 from .utils import cartData, showProductsData, productFormData, cookiesCart
 from django.contrib import messages
 from .form import UserCreationForm, CustomerForm, ProductForm
@@ -39,9 +41,10 @@ def signup(request):
 		if form.is_valid():
 			user = form.save()
 			username = form.cleaned_data.get('username')
-
+			email = form.cleaned_data.get('email')
 			login(request, user)
 			messages.success(request, f"Account for {username} created successfully")
+			sendMail(request, email)
 			return redirect('/')
 	content = {'form': form}
 	return render(request, 'authentication/signup.html', content)

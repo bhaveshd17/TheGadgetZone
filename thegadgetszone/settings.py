@@ -136,3 +136,11 @@ cloudinary.config(
   api_key = "234694669172642",
   api_secret = "8WA5gCb2DEQn2PitkJMyKXD6C-g"
 )
+
+#email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_USER = 'thegadgetszonestore@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_PASSWORD = "Gadget@123"
