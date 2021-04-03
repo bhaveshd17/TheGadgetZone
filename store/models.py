@@ -48,7 +48,7 @@ class Product(models.Model):
     rate = models.PositiveIntegerField()
     discountPrice = models.DecimalField(max_digits=16, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     digital = models.BooleanField(default=False, null=True, blank=False)
-    description = models.CharField(max_length=1000, null=True, blank=True)
+    description = models.TextField(max_length=1000, null=True, blank=True)
     image = CloudinaryField('image')
 
     def __str__(self):
@@ -152,12 +152,11 @@ class UserAddress(models.Model):
         return self.address
 
 
-
-class OrderUpdate(models.Model):
-    update_id = models.AutoField(primary_key=True)
-    order_id = models.IntegerField(default="")
-    update_description = models.CharField(max_length=5000)
-    timestamp = models.DateField(auto_now_add=True)
-
+class Review(models.Model):
+    rating = models.PositiveIntegerField()
+    body = models.CharField(max_length=200, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    timeDate = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return self.update_description[0:7] + '...'
+        return self.customer.name

@@ -6,6 +6,23 @@
 <div class="my-3">
     <div class="card mb-3">
         <div class="card-body">
+            <div class="d-flex justify-content-center mb-3">
+                <form action="/dashboard/allCustomers" method="get">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <input type="search" class="form-control rounded" placeholder="search by username"
+                            aria-label="Search" aria-describedby="search-addon" name="searchUsername">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-outline-primary mx-3">search</button>
+                        </div>
+                    </div>
+                </form>
+                <div class=row">
+                    <a href="/dashboard/allCustomers" class="btn btn-outline-warning">Back</a>
+                </div>
+            </div>
+            {% if flag == True %}
             <table class="table table-striped">
                 <tr>
                     <th>Username</th>
@@ -22,15 +39,16 @@
                     <td>{{customer.email}}</td>
                     <td>{{customer.phone}}</td>
                     <td>
-                        <p class="btn btn-danger d-grid" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{customer.user.username}}">
+                        <p class="btn btn-danger d-grid" data-bs-toggle="modal"
+                            data-bs-target="#{{customer.user.username}}">
                             Delete
                         </p>
 
                     </td>
                 </tr>
                 <!-- Modal -->
-                <div class="modal fade" id="{{customer.user.username}}" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                <div class="modal fade" id="{{customer.user.username}}" data-bs-backdrop="static"
+                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -39,10 +57,11 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                               Do you really want to permanently delete your account
+                                Do you really want to permanently delete your account
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-bs-dismiss="modal">Close</button>
                                 <form action="{% url 'remove_customer' customer.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -54,6 +73,13 @@
                 {% endif %}
                 {% endfor %}
             </table>
+            {% else %}
+            <div class="card text-center mt-5">
+                <div class="card-body">
+                  <h5 class="card-title">No result found</b>"</h5>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

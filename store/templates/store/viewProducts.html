@@ -2,15 +2,11 @@
 {% load static %}
 
 {%block body%}
-<div class="row mt-5">
+<link rel="stylesheet" href="{% static 'css/star.css' %}">
+<div class="row my-5">
     <div class="col-md-6">
         <div class="card card-body">
             <img src="{{product.ImageUrl}}" class="card-img-top" alt="...">
-        </div>
-
-    </div>
-    <div class="col-md-6">
-        <div class="card card-body">
             <h5 class="card-title mb-3">{{product.name}}</h5>
             <div class="d-flex flex-column mb-3">
                 <h4 style="font-size: 15px; color: green;"><strong>Price: &#8377;
@@ -25,18 +21,69 @@
             <p class="card-text mt-3 text-muted">Description :-</p>
             <p class="card-text mb-3" style="font-weight: 400;">{{product.description}}</p>
 
-            <a href="{% url 'edit_product' product.id%}" class="btn btn-primary mb-3">Edit</a>
-            <a href="{% url 'remove_product' product.id%}" class="btn btn-danger mb-3">Delete</a>
-            <a data-product="{{product.id}}" data-action="add" class="btn btn-warning add-btn update-cart mb-3">Add To
-                Cart</a>
+            <div class="d-flex justify-content-center my-3">
+                <a href="{% url 'edit_product' product.id%}" class="btn btn-primary mx-2">Edit</a>
+                <a href="{% url 'remove_product' product.id%}" class="btn btn-danger mx-2">Delete</a>
+                <a data-product="{{product.id}}" data-action="add" class="btn btn-warning add-btn update-cart mx-2">Add
+                    To
+                    Cart</a>
+            </div>
         </div>
     </div>
-</div>
-<div class="row my-3">
-    <div class="col-md-12">
+
+
+
+    <div class="col-md-6">
+        <!-- {% if request.user.customer.name in orderItemList %} -->
         <div class="card card-body">
-            <h5 class="cart-title">Review</h5>
+            <h4 class="card-title">Rate Product</h4>
+            <form action="reviewProduct/" method="Post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <fieldset class="starability-grow">
+                        <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked
+                            aria-label="No rating.">
+                        {% for i in range %}
+                        <input type="radio" id="first-rate{{i}}" name="rating" value="{{i}}">
+                        <label for="first-rate{{i}}" title="Terrible">{{i}} star</label>
+                        {% endfor %}
+                    </fieldset>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="body">Write Review - <span class="text-mutes">share your thaughts
+                            with other user</span></label>
+                    <textarea class="form-control" type="text" name="body" id="body" required></textarea>
+                </div>
+                <button class="btn btn-success">Submit</button>
+            </form>
         </div>
+        <!-- {% endif %} -->
+
+        <div class="card my-3">
+            <div class="card-body">
+                {% for review in reviews %}
+                <p class="starability-result" data-rating={{review.rating}}>
+                    Rated: {{review.rating}} stars
+                </p>
+                <h6 class="card-subtitle mb-2 text-muted">by {{review.customer.name}} at {{review.timeDate}}
+                </h6>
+                <p class="card-text">
+                    Review : {{review.body}}
+                </p>
+                {% if request.user and request.user.customer ==  review.customer %}
+                <form method="POST" action="/viewProducts/{{product.id}}/delete_review/{{review.id}}/" class="mb-3">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+                {% endif %}
+                <hr>
+                {% endfor %}
+
+            </div>
+        </div>
+
     </div>
 </div>
+
 {%endblock body%}

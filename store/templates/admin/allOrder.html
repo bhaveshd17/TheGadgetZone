@@ -38,11 +38,6 @@
                   <input type="text" name="deliveredOrder" value="{{orderItem.id}}" required class="hidden">
                   <button class="btn btn-outline-success me-3">Delivery</button>
                 </form>
-                <form action="remove" method="post">
-                  {% csrf_token %}
-                  <input type="text" name="removeOrder" value="{{orderItem.id}}" required class="hidden">
-                  <button class="btn btn-outline-danger me-3">Remove</button>
-                </form>
               </div>
             </div>
           </div>

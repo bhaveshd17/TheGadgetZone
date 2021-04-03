@@ -8,7 +8,7 @@ from .models import *
 from django.http import JsonResponse
 from .utils import cartData, showProductsData, productFormData, cookiesCart
 from django.contrib import messages
-from .form import UserCreationForm, CustomerForm
+from .form import UserCreationForm, CustomerForm, ProductForm
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user, allowed_users, allowed_checkout
 
@@ -97,11 +97,11 @@ def userOrderDetails(request):
 	return render(request, 'store/userOrderDetails.html', content)
 
 @login_required(login_url='login')
-def viewOrder(request, pk):
-	data = cartData(request)
-	cartItems = data['cartItems']
-	content = {'cartItems':cartItems}
-	return render(request, 'store/viewOrder.html', content)
+def cancelOrder(request, pk):
+	orderItem = OrderItem.objects.get(id=pk)
+	orderItem.delete()
+	messages.success(request, f"Order for {orderItem} Successfully Canceled")
+	return redirect('/userOrderDetails')
 
 @login_required(login_url='login')
 def addAddress(request):
@@ -209,12 +209,43 @@ def viewProducts(request, pk):
 	cartItems = data['cartItems']
 	product = Product.objects.get(id=pk)
 	date = (datetime.now()+ timedelta(days=6)).strftime('%d %A')
+	reviews = Review.objects.filter(product=product)
+	orderItem = OrderItem.objects.filter(product=product)
+	oi_list = []
+	for oi in orderItem:
+		oi_list.append(oi.order.customer.name)
+	print(oi_list)
 	content = {
 		'cartItems': cartItems,
 		'product':product,
-		'date':date
+		'reviews':reviews,
+		'date':date,
+		'range':range(1, 6),
+		'orderItemList':oi_list,
+		'orderItem':orderItem
 	}
 	return render(request, 'store/viewProducts.html', content)
+
+@login_required(login_url='login')
+def reviewProduct(request, pk):
+	rating = request.POST.get('rating')
+	body = request.POST.get('body')
+	product = Product.objects.get(id=pk)
+	customer = request.user.customer
+	review = Review(
+		rating=rating,
+		body=body,
+		product=product,
+		customer=customer
+	)
+	review.save()
+	return redirect(f'/viewProducts/{pk}')
+@login_required(login_url='login')
+def delete_review(request, pk, rk):
+	review = Review.objects.get(id=rk)
+	review.delete()
+	messages.success(request, "review deleted successfully")
+	return redirect(f'/viewProducts/{pk}')
 
 def cart(request):
 
@@ -370,6 +401,8 @@ def addProducts(request):
 def addCategory(request):
 	if request.method == 'POST':
 		category = request.POST.get('category')
+		categoryCreate = Category(category=category)
+		categoryCreate.save()
 		return redirect('/')
 
 	return redirect('/')
@@ -426,19 +459,6 @@ def deliveredBtn(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
-def removeOrderBtn(request):
-	if request.method == 'POST':
-		order_id = request.POST.get("removeOrder")
-		orderItem = OrderItem.objects.get(id=order_id)
-		orderItem.delete()
-		messages.success(request, f"{orderItem} remove successfully !")
-		return redirect('/dashboard/allOrder')
-
-	else:
-		return redirect('/dashboard/allOrder')
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
 def orderDelivered(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
@@ -452,8 +472,19 @@ def allCustomers(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
 	customers = Customer.objects.all()
+	flag = True
+	if request.GET.get('searchUsername'):
+		query = request.GET.get('searchUsername')
+		try:
+			user = User.objects.get(username=query)
+		except:
+			user = User.objects.none()
+		if user:
+			customers = Customer.objects.filter(user=user)
+		else:
+			flag = False
 
-	content = {'cartItems': cartItems,'customers':customers}
+	content = {'cartItems': cartItems,'customers':customers, 'flag':flag}
 	return render(request, 'admin/allCustomers.html', content)
 
 @login_required(login_url='login')
@@ -483,14 +514,19 @@ def edit_product(request, pk):
 	data = cartData(request)
 	cartItems = data['cartItems']
 	product = Product.objects.get(id=pk)
-	categories = Category.objects.all()
-	print(product.image)
+	form = ProductForm(instance=product)
+	# product = Product.objects.get(id=pk)
+	# categories = Category.objects.all()
+	# print(product.image)
 	if request.method == 'POST':
-		product = productFormData(request)
-		product.save()
-		delete_image = request.POST.get('delete_image')
-		cloudinary.uploader.destroy(delete_image, invalidate=True)
-		messages.success(request, f"successfully Update product {product}")
-		return redirect('/')
-	content = {'cartItems':cartItems, 'product':product, 'categories':categories}
+		form = ProductForm(request.POST, instance=product)
+		if form.is_valid():
+			form.save()
+			messages.success(request, f"successfully Update product {product}")
+			return redirect('/')
+	# 	# delete_image = request.POST.get('delete_image')
+	# 	# cloudinary.uploader.destroy(delete_image, invalidate=True)
+	# 	messages.success(request, f"successfully Update product {product}")
+	# 	return redirect('/')
+	content = {'cartItems':cartItems, 'form':form}
 	return render(request, 'admin/edit_product_form.html', content)
