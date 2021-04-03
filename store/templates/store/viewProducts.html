@@ -21,12 +21,20 @@
             <p class="card-text mt-3 text-muted">Description :-</p>
             <p class="card-text mb-3" style="font-weight: 400;">{{product.description}}</p>
 
-            <div class="d-flex justify-content-center my-3">
-                <a href="{% url 'edit_product' product.id%}" class="btn btn-primary mx-2">Edit</a>
-                <a href="{% url 'remove_product' product.id%}" class="btn btn-danger mx-2">Delete</a>
-                <a data-product="{{product.id}}" data-action="add" class="btn btn-warning add-btn update-cart mx-2">Add
-                    To
-                    Cart</a>
+            <div class="row mt-3">
+                {% if request.user.username == 'admin' %}
+                <div class="col-md-4 d-grid">
+                    <a href="{% url 'edit_product' product.id%}" class="btn btn-primary">Edit</a>
+                </div>
+                <div class="col-md-4 d-grid">
+                    <a href="{% url 'remove_product' product.id%}" class="btn btn-danger">Delete</a>
+                </div>
+                <div class="col-md-4 d-grid">
+                    <a data-product="{{product.id}}" data-action="add" class="btn btn-warning add-btn update-cart">Add to Cart</a>
+                </div>
+                {% else %}
+                <div class="d-grid"><a data-product="{{product.id}}" data-action="add" class="btn btn-warning add-btn update-cart">Add to Cart</a></div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -34,7 +42,6 @@
 
 
     <div class="col-md-6">
-        <!-- {% if request.user.customer.name in orderItemList %} -->
         <div class="card card-body">
             <h4 class="card-title">Rate Product</h4>
             <form action="reviewProduct/" method="Post" class="needs-validation" novalidate>
@@ -58,8 +65,6 @@
                 <button class="btn btn-success">Submit</button>
             </form>
         </div>
-        <!-- {% endif %} -->
-
         <div class="card my-3">
             <div class="card-body">
                 {% for review in reviews %}

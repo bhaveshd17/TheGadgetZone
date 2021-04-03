@@ -3,19 +3,69 @@
 
 
 {%block body%}
-<form action="" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <div class="mb-3">
+<div class="row">
+  <h4 class="text-center my-3">Update Product</h4>
+  <div class="col-md-6 offset-md-3">
+    <form action="" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_name">Product Name</label>
         {{form.name}}
-        <label for="password">Password</label>
       </div>
-    <button>submit</button>
-</form>
+      <div class="mb-3">
+        <label for="id_price">Price</label>
+        {{form.price}}
+      </div>
+      <div class="mb-3">
+        <label for="id_rate">Rate</label>
+        {{form.rate}}
+      </div>
+      <div class="mb-3">
+        <label for="id_discountPrice">Discount Price</label>
+        {{form.discountPrice}}
+      </div>
+      <div class="mb-3">
+        <label for="id_savePrice">Save Price</label>
+        {{form.savePrice}}
+      </div>
+      <div class="mb-3">
+        <label for="id_category">Category</label>
+        {{form.category}}
+      </div>
+      <div class="mb-3">
+        <label for="id_digital">Digital</label>
+        {{form.digital}}
+      </div>
+      <div class="mb-3">
+        <label for="id_rate">Description</label>
+        {{form.description}}
+      </div>
+      <div class="mb-3">
+        <label for="id_image">Image</label>
+        {{form.image}}
+      </div>
+      <div class="mb-3 d-grid">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
 <script>
-    let form_fields = document.getElementsByTagName('input')
-    for(let field in form_fields){
+  let form_fields = document.getElementsByTagName('input')
+  let form_fields1 = document.getElementsByTagName('textarea')
+  let form_fields2 = document.getElementsByTagName('select')
+
+  for (let field in form_fields) {
     form_fields[field].className += 'form-control';
   }
+  for (let field in form_fields1) {
+    form_fields1[field].className += 'form-control';
+  }
+  for (let field in form_fields2) {
+    form_fields2[field].className += 'form-select';
+  }
+  document.getElementById("id_description").required = true
+
+
 </script>
 {% endblock body %}

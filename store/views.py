@@ -210,19 +210,12 @@ def viewProducts(request, pk):
 	product = Product.objects.get(id=pk)
 	date = (datetime.now()+ timedelta(days=6)).strftime('%d %A')
 	reviews = Review.objects.filter(product=product)
-	orderItem = OrderItem.objects.filter(product=product)
-	oi_list = []
-	for oi in orderItem:
-		oi_list.append(oi.order.customer.name)
-	print(oi_list)
 	content = {
 		'cartItems': cartItems,
 		'product':product,
 		'reviews':reviews,
 		'date':date,
-		'range':range(1, 6),
-		'orderItemList':oi_list,
-		'orderItem':orderItem
+		'range':range(1, 6)
 	}
 	return render(request, 'store/viewProducts.html', content)
 
@@ -501,7 +494,10 @@ def remove_customer(request, pk):
 @allowed_users(allowed_roles=['admin'])
 def remove_product(request, pk):
 	product = Product.objects.get(id=pk)
-	orderItem = OrderItem.objects.get(product=product)
+	try:
+		orderItem = OrderItem.objects.get(product=product)
+	except:
+		orderItem = OrderItem.objects.none()
 	cloudinary.uploader.destroy(product.image.public_id,invalidate=True)
 	orderItem.delete()
 	product.delete()
@@ -515,18 +511,13 @@ def edit_product(request, pk):
 	cartItems = data['cartItems']
 	product = Product.objects.get(id=pk)
 	form = ProductForm(instance=product)
-	# product = Product.objects.get(id=pk)
-	# categories = Category.objects.all()
-	# print(product.image)
+	p_id = product.image.public_id
 	if request.method == 'POST':
-		form = ProductForm(request.POST, instance=product)
+		form = ProductForm(request.POST, request.FILES, instance=product)
 		if form.is_valid():
+			cloudinary.uploader.destroy(p_id, invalidate=True)
 			form.save()
-			messages.success(request, f"successfully Update product {product}")
-			return redirect('/')
-	# 	# delete_image = request.POST.get('delete_image')
-	# 	# cloudinary.uploader.destroy(delete_image, invalidate=True)
-	# 	messages.success(request, f"successfully Update product {product}")
-	# 	return redirect('/')
+			messages.success(request, "Product update successfully")
+			return redirect(f'/viewProducts/{pk}')
 	content = {'cartItems':cartItems, 'form':form}
 	return render(request, 'admin/edit_product_form.html', content)
