@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import cloudinary.uploader
-import django_heroku
-import dj_database_url
-from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +25,7 @@ SECRET_KEY = '-v2o+l%8k&&f$@9a7y-#5e8urg6l1-9j=%q^8$!t70*4xq_dqq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+
 
 ALLOWED_HOSTS = ['thegadgetszone.herokuapp.com', '127.0.0.1']
 
@@ -152,4 +150,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = "Gadget@123"
 
-django_heroku.settings(locals())
+
