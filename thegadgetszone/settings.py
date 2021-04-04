@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import cloudinary.uploader
+import django_heroku
+import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,9 +135,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-# MEDIA_URL = "/img/"
-#
-# MEDIA_ROOT = BASE_DIR / "static/img"
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 #cloudinary
 cloudinary.config(
@@ -150,3 +153,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = "Gadget@123"
+
+django_heroku.settings(locals())
