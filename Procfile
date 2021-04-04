@@ -1,0 +1,1 @@
+web: gunicorn thegadgetszone.wsgi --log-file -
