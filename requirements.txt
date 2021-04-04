@@ -17,11 +17,8 @@ Pillow==8.1.2
 psycopg2==2.8.6
 pylint==2.6.0
 pytz==2020.1
-pywin32==300
-PyYAML==5.3.1
 six==1.15.0
 smmap==3.0.4
-SpeechRecognition==3.8.1
 sqlparse==0.4.1
 stevedore==3.2.2
 toml==0.10.1
