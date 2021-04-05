@@ -65,7 +65,7 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.CharField(max_length=200, null=True)
@@ -107,8 +107,8 @@ class OrderItem(models.Model):
         ("Out for Delivery", "Out for Delivery"),
         ("Delivered", "Delivered")
     )
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
     quantity = models.PositiveIntegerField(default=0, null=True, blank=True)
     status = models.CharField(max_length=100, null=True, choices=status_category, default="Pending")
     date = models.DateTimeField(auto_now_add=True)
@@ -127,8 +127,8 @@ class OrderItem(models.Model):
 
 
 class ShippingAddress(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=True, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, blank=True, null=True)
     address = models.CharField(max_length=200, null=True)
     city = models.CharField(max_length=200, null=True)
     state = models.CharField(max_length=200, null=True)
@@ -141,7 +141,7 @@ class ShippingAddress(models.Model):
 
 
 class UserAddress(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=True, null=True)
     address = models.CharField(max_length=200, null=True)
     city = models.CharField(max_length=200, null=True)
     state = models.CharField(max_length=200, null=True)
@@ -154,8 +154,8 @@ class UserAddress(models.Model):
 class Review(models.Model):
     rating = models.PositiveIntegerField()
     body = models.CharField(max_length=200, null=True, blank=True)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=True, null=True)
     timeDate = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.customer.name

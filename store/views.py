@@ -445,7 +445,8 @@ def deliveredBtn(request):
 		orderItem = OrderItem.objects.get(id=order_id)
 		if orderItem.status == "Shipping":
 			orderItem.status = "Delivered"
-			orderItem.save()
+			orderItem.delete()
+			# orderItem.save()
 			messages.success(request, f"{orderItem} successfully delivered !")
 		else:
 			messages.warning(request, f"{orderItem} already Delivered")
