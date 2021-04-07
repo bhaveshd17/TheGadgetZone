@@ -67,6 +67,42 @@
 
 </div>
 
+{% if chart %}
+<div class="d-flex align-item-center justify-content-center my-3">
+    <img src="data:image:png;base64, {{chart|safe}}">
+</div>
+{% endif %}
+{% if tchart %}
+<div class="d-flex align-item-center justify-content-center my-3">
+    <img src="data:image:png;base64, {{tchart|safe}}">
+</div>
+{% endif %}
+<div class="row my-3">
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3 color-1">
+                <div class="card-header">
+                    <h5 class="card-title statusSize">Total Payment</h5>
+                </div>
+                <div class="card-body my-3">
+                    <h3 class="card-title statusSize"></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3 color-2">
+                <div class="card-header">
+                    <h5 class="card-title statusSize">Profit</h5>
+                </div>
+                <div class="card-body my-3">
+                    <h3 class="card-title statusSize"></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row my-3">
     <div class="col-md-5">

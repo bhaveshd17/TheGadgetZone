@@ -29,7 +29,6 @@ urlpatterns = [
 	path('dashboard/allOrder/accept', views.acceptBtn, name="accept"),
 	path('dashboard/allOrder/shipping', views.shippingBtn, name="shipping"),
 	path('dashboard/allOrder/delivered', views.deliveredBtn, name="delivered"),
-	path('dashboard/orderDelivered', views.orderDelivered, name="orderDelivered"),
 	path('dashboard/allCustomers', views.allCustomers, name='allCustomers'),
 	path('dashboard/allCustomers/<int:pk>/', views.remove_customer, name='remove_customer'),
 

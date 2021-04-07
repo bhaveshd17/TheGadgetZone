@@ -4,11 +4,13 @@ from math import ceil
 import cloudinary.uploader
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, HttpResponse
+
+from .dashboard import dashboardContent
 from .models import *
 from django.http import JsonResponse
 
 from .send_email import sendMail
-from .utils import cartData, showProductsData, productFormData, cookiesCart
+from .utils import cartData, showProductsData, productFormData, cookiesCart, getting_email
 from django.contrib import messages
 from .form import UserCreationForm, CustomerForm, ProductForm
 from django.contrib.auth.decorators import login_required
@@ -44,7 +46,12 @@ def signup(request):
 			email = form.cleaned_data.get('email')
 			login(request, user)
 			messages.success(request, f"Account for {username} created successfully")
-			sendMail(request, email)
+			sendMail(request, [email], {
+				'head': 'accountCreated',
+				'p1':'WELCOME',
+				'p2':username,
+				'p3':'Thanks for signing up to The Gadget Zone store. Enjoy Electronics Shopping in Gadget Zone store. Click below link for continue shopping.',
+			}, 'AddPAndWelcome')
 			return redirect('/')
 	content = {'form': form}
 	return render(request, 'authentication/signup.html', content)
@@ -327,7 +334,12 @@ def processOrder(request):
 			zipcode=data['shipping']['zipcode'],
 			country=data['shipping']['country']
 		)
-
+	sendMail(request, [request.user.email], {
+		'username':request.user.username,
+		'products':OrderItem.objects.filter(order=order),
+		'order':order,
+		'msg':'Confirmed'
+	}, 'delivery')
 	return JsonResponse('Payment Complete', safe=False)
 
 
@@ -339,33 +351,7 @@ def processOrder(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def dashboard(request):
-	data = cartData(request)
-	cartItems = data['cartItems']
-	customers = Customer.objects.all()
-	orderItem = OrderItem.objects.all().order_by("-date")
-	if len(orderItem)>=5 :
-		orderItems = [orderItem[i] for i in range(0, 5)]
-	else:
-		orderItems = [orderItem[i] for i in range(0, len(orderItem))]
-	if len(customers)>=5:
-		customers = [customers[i] for i in range(1, 6)]
-	else:
-		customers = [customers[i] for i in range(0, len(customers))]
-	delivered = orderItem.filter(status='Delivered').count()
-	pending = orderItem.filter(status='Pending').count()
-	shipping = orderItem.filter(status='Shipping').count()
-	accepted = orderItem.filter(status='Accepted').count()
-	content = {
-		'cartItems':cartItems,
-		'customers':customers,
-		'orderItems':orderItems,
-		'total_order':orderItem.count(),
-		'delivered':delivered,
-		'pending':pending,
-		'accepted': accepted,
-		'shipping': shipping,
-
-	}
+	content = dashboardContent(request)
 	return render(request, 'admin/dashboard.html', content)
 
 @login_required(login_url='login')
@@ -386,6 +372,16 @@ def addProducts(request):
 	if request.method == 'POST':
 		product = productFormData(request)
 		product.save()
+		p_id = product.id
+		sendMail(request, getting_email(), {
+			'head': 'ProductAdded',
+			'p2':f'Hey! New Product added to gadgets Zone',
+			'img':Product.objects.get(id=p_id).ImageUrl,
+			'p3':f'{product.name}',
+			'p4':f'Price : {product.discountPrice}',
+			'p5':'Grab the offer hurry up before out !!',
+
+		}, 'AddPAndWelcome')
 		messages.success(request, f"Successfully added {product}")
 		return redirect('/')
 
@@ -426,13 +422,22 @@ def shippingBtn(request):
 	if request.method == 'POST':
 		order_id = request.POST.get("shippingOrder")
 		orderItem = OrderItem.objects.get(id=order_id)
-		print(orderItem)
 		if orderItem.status == "Accepted":
 			orderItem.status = "Shipping"
 			orderItem.save()
+			oid = orderItem.order.id
+			order = Order.objects.get(id=oid)
+			sendMail(request, [order.customer.email], {
+				'username': order.customer.user.username,
+				'products': orderItem,
+				'order': order,
+				'msg': 'Shipped'
+			}, 'delivery')
 			messages.success(request, f"{orderItem} Send for shipment !")
 		else:
 			messages.warning(request, f"{orderItem} already Shipped")
+
+
 		return redirect('/dashboard/allOrder')
 	else:
 		return redirect('/dashboard/allOrder')
@@ -445,23 +450,23 @@ def deliveredBtn(request):
 		orderItem = OrderItem.objects.get(id=order_id)
 		if orderItem.status == "Shipping":
 			orderItem.status = "Delivered"
-			orderItem.delete()
-			# orderItem.save()
+			orderItem.save()
+			oid = orderItem.order.id
+			order = Order.objects.get(id=oid)
+			sendMail(request, [order.customer.email], {
+				'username': order.customer.user.username,
+				'products': orderItem,
+				'order': order,
+				'msg': 'Delivered'
+			}, 'delivery')
 			messages.success(request, f"{orderItem} successfully delivered !")
 		else:
 			messages.warning(request, f"{orderItem} already Delivered")
+
 		return redirect('/dashboard/allOrder')
 	else:
 		return redirect('/dashboard/allOrder')
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-def orderDelivered(request):
-	data = cartData(request)
-	cartItems = data['cartItems']
-	orderItems = OrderItem.objects.filter(status="Delivered")
-	content = {'cartItems':cartItems, 'orderItems':orderItems}
-	return render(request, 'admin/deliveredOrder.html', content)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])

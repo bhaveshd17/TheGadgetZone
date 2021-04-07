@@ -96,3 +96,16 @@ def productFormData(request):
     product.image = request.FILES.get('image')
     return product
 
+
+def getting_email():
+    customers = Customer.objects.all()
+    email_list = []
+    for customer in customers:
+        if customer.email != User.objects.get(username='admin').email:
+            email_list.append(customer.email)
+    return email_list
+
+
+
+
+
