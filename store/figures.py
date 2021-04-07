@@ -32,7 +32,7 @@ def get_plot(x, y):
     plt.title('Daily Transactions')
     plt.plot(x, y, 'r-',lw=1, label="transaction")
     plt.xlim(datetime.date(2021, 4, 1), datetime.date.today())
-    plt.ylim(0, 10000000)
+    plt.ylim(0, 100000)
     plt.tight_layout()
     graph = get_graph()
     return graph
