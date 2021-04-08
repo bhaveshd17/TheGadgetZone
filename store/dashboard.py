@@ -25,7 +25,11 @@ def dashboardContent(request):
     accepted = orderItem.filter(status='Accepted').count()
 
     # for order analysis
-    x = list(set([x.date.date() for x in orderItem ]))
+    x = []
+    for item in orderItem:
+        if item not in x:
+            x.append(item.date.date())
+
     y = []
     for i in x:
         a = [y.order for y in orderItem if y.date.date() == i]
