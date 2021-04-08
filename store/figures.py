@@ -30,7 +30,7 @@ def get_plot(x, y):
     plt.switch_backend('AGG')
     plt.figure(figsize=(12, 5))
     plt.title('Daily Transactions')
-    plt.plot(x, y, 'r-',lw=1, label="transaction")
+    plt.bar(x, y, 'r-',lw=1, label="transaction")
     plt.xlim(datetime.date(2021, 4, 1), datetime.date.today())
     plt.ylim(0, 500000)
     plt.tight_layout()
