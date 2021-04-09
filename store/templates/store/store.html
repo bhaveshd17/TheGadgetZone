@@ -30,6 +30,15 @@
 
 <div class="row p-0">
     <div class="col-md-3 mt-5">
+            {% if request.user.is_staff %}
+            <div class="card card-body vh-100 mb-3" style="width: 18rem;">
+            <div class="card-title text-muted text-center fs-5">Admin Panel</div>
+            <ul class="list-group list-group-flush text-center">
+                <li class="list-group-item"><a href="{% url 'dashboard' %}" class="fs-6">Dashboard</a></li>
+                <li class="list-group-item"><a href="{% url 'addProducts' %}" class="fs-6">Add Product</a></li>
+            </ul>
+            </div>
+            {% endif %}
         <div class="card card-body vh-100" style="width: 18rem;">
             
             <div class="card-title text-muted text-center fs-5">Categories</div>
