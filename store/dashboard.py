@@ -1,5 +1,5 @@
-from store.figures import get_bar, get_plot
-from store.models import Customer, OrderItem, Order
+from store.figures import get_bar, get_plot, get_pie
+from store.models import Customer, OrderItem, Order, Category
 from store.utils import cartData
 
 
@@ -27,7 +27,7 @@ def dashboardContent(request):
     # for order analysis
     x = []
     for item in orderItem:
-        if item not in x:
+        if item.date.date() not in x:
             x.append(item.date.date())
 
     y = []
@@ -42,6 +42,29 @@ def dashboardContent(request):
         a = [float(y.product.discountPrice) for y in orderItem if y.date.date() == i]
         transaction.append(sum(a))
     transactionChart = get_plot(x, transaction)
+
+    total_payment = sum(transaction)
+    profit = (len(orderItem)*60)//100
+
+    categories = Category.objects.all()
+    cat_list = []
+    for category in categories:
+        cat_list.append(category.category)
+
+
+    category_wise_quantity =[]
+
+    for keyL in cat_list:
+        cat_sort = []
+        for ordr in orderItem:
+            if ordr.product.category.category == keyL:
+                cat_sort.append(ordr.product.category.category)
+
+        category_wise_quantity .append(len(cat_sort))
+
+
+    pie_chart = get_pie(category_wise_quantity, cat_list)
+
     return {
         'cartItems': cartItems,
         'customers': customers,
@@ -53,5 +76,8 @@ def dashboardContent(request):
         'shipping': shipping,
         'chart':orderChart,
         'tchart':transactionChart,
+        'total_payment':total_payment,
+        'profit':profit,
+        'pie_chart':pie_chart,
 
     }

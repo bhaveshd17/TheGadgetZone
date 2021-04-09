@@ -41,6 +41,10 @@
         {{form.description}}
       </div>
       <div class="mb-3">
+        <label for="id_tags">Tags</label>
+        {{form.tags}}
+      </div>
+      <div class="mb-3">
         <label for="id_image">Image</label>
         {{form.image}}
       </div>
@@ -65,6 +69,7 @@
     form_fields2[field].className += 'form-select';
   }
   document.getElementById("id_description").required = true
+  document.getElementById("id_tags").required = true
 
 
 </script>

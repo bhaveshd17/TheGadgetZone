@@ -77,31 +77,37 @@
     <img src="data:image:png;base64, {{tchart|safe}}">
 </div>
 {% endif %}
+
 <div class="row my-3">
-    <div class="col">
-        <div class="col-md">
-            <div class="card text-center mb-3 color-1">
-                <div class="card-header">
-                    <h5 class="card-title statusSize">Total Payment</h5>
+    <div class="col-md-4 mt-5">
+            <div class="mt-5">
+                <div class="card text-center mb-3 color-1">
+                    <div class="card-header">
+                        <h5 class="card-title statusSize">Total Payment</h5>
+                    </div>
+                    <div class="card-body my-3">
+                        <h3 class="card-title statusSize">&#8377 {{total_payment}}</h3>
+                    </div>
                 </div>
-                <div class="card-body my-3">
-                    <h3 class="card-title statusSize"></h3>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="col-md">
-            <div class="card text-center mb-3 color-2">
-                <div class="card-header">
-                    <h5 class="card-title statusSize">Profit</h5>
-                </div>
-                <div class="card-body my-3">
-                    <h3 class="card-title statusSize"></h3>
+                <div class="card text-center mb-3 color-2">
+                    <div class="card-header">
+                        <h5 class="card-title statusSize">Profit</h5>
+                    </div>
+                    <div class="card-body my-3">
+                        <h3 class="card-title statusSize">{{profit}}%</h3>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
+
+    <div class="col-md-8">
+        {% if pie_chart %}
+        <div class="d-flex align-item-center justify-content-center my-3">
+            <img src="data:image:png;base64, {{pie_chart|safe}}">
+        </div>
+        {% endif %}
+    </div>
+
 </div>
 
 <div class="row my-3">
@@ -117,7 +123,7 @@
                 <tr>
                     <td>{{customer.name}}</td>
                     <td>{{customer.email}}</td>
-                {% endfor %}
+                    {% endfor %}
             </table>
             <a href="{% url 'allCustomers' %}" class="btn btn-primary btn-sm d-grid">
                 View all Customer

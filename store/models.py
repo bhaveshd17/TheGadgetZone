@@ -48,6 +48,7 @@ class Product(models.Model):
     discountPrice = models.DecimalField(max_digits=16, decimal_places=2)
     digital = models.BooleanField(default=False, null=True, blank=False)
     description = models.TextField(max_length=1000, null=True, blank=True)
+    tags = models.TextField(max_length=500, null=True, blank=True, default="")
     image = CloudinaryField('image')
 
     def __str__(self):

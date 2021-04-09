@@ -186,8 +186,8 @@ def search(request):
 		products = Product.objects.none()
 	else:
 		productsName = Product.objects.filter(name__icontains=query)
-		productDesc = Product.objects.filter(description=query)
-		products = productDesc.union(productsName)
+		productTag = Product.objects.filter(tags__icontains=query)
+		products = productTag.union(productsName)
 	content = {
 		'cartItems': cartItems,
 		'products':products,

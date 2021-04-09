@@ -32,6 +32,7 @@ def cookiesCart(request):
                     # 'subCategory':product.subCategory,
                     'savePrice':product.savePrice,
                     'price': product.price,
+                    'tags':product.tags,
                     'discountPrice':product.discountPrice,
                     'ImageUrl': product.ImageUrl,
                 },
@@ -89,6 +90,7 @@ def productFormData(request):
     product.rate = rate
     product.savePrice = savePrice
     product.description = request.POST.get('description')
+    product.tags = request.POST.get('tags')
     product.discountPrice = discountPrice
     categoryId = request.POST.get('category')
     product.category = Category.objects.get(id=categoryId)

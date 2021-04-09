@@ -1,8 +1,13 @@
 import datetime
+import random
+import matplotlib.colors as mcolors
 
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
+
+
+
 
 def get_graph():
     buffer = BytesIO()
@@ -33,6 +38,15 @@ def get_plot(x, y):
     plt.plot(x, y, 'r-',lw=1, label="transaction")
     plt.xlim(datetime.date(2021, 4, 1), datetime.date.today())
     plt.ylim(0, 500000)
+    plt.tight_layout()
+    graph = get_graph()
+    return graph
+
+def get_pie(category, labels):
+    colors = random.choices(list(mcolors.CSS4_COLORS.values()),k = len(labels))
+    explode = [0, 0, 0, 0, 0, 0]
+    plt.figure(figsize=(5, 5))
+    plt.pie(category, colors=colors, labels=labels, shadow=True, autopct='%3.1f%%', startangle=180)
     plt.tight_layout()
     graph = get_graph()
     return graph
