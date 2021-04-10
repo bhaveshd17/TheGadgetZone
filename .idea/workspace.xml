@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="670222d2-83a9-4849-b4cd-af2e8d8459fd" name="Default Changelist" comment="" />
+    <list default="true" id="670222d2-83a9-4849-b4cd-af2e8d8459fd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/thegadgetszone/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/thegadgetszone/settings.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
