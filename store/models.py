@@ -160,3 +160,8 @@ class Review(models.Model):
     timeDate = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.customer.name
+
+class UserOTP(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True, blank=True)
+    time_st = models.DateTimeField(auto_now= True)
+    otp = models.SmallIntegerField()

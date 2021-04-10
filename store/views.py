@@ -1,3 +1,4 @@
+import random
 from datetime import datetime, timedelta
 import json
 from math import ceil
@@ -9,7 +10,7 @@ from .dashboard import dashboardContent
 from .models import *
 from django.http import JsonResponse
 
-from .send_email import sendMail
+from .send_email import sendMail, otpMail
 from .utils import cartData, showProductsData, productFormData, cookiesCart, getting_email
 from django.contrib import messages
 from .form import UserCreationForm, CustomerForm, ProductForm
@@ -37,24 +38,69 @@ def loginPage(request):
 
 @unauthenticated_user
 def signup(request):
-	form = UserCreationForm()
+	# form = UserCreationForm()
 	if request.method == 'POST':
+		get_otp = request.POST.get('otp')
+		# form = UserCreationForm(request.POST)
+
+		if get_otp:
+			get_user = request.POST.get('user')
+			user = User.objects.get(username=get_user)
+			try:
+				if int(get_otp) == UserOTP.objects.filter(user=user).last().otp:
+					user.is_active = True
+					user.save()
+					messages.success(request, f'Account is Created for {user.username}')
+					sendMail(request, [user.email], {
+						'head': 'accountCreated',
+						'p1': 'WELCOME',
+						'p2': user.username,
+						'p3': 'Thanks for signing up to The Gadget Zone store. Enjoy Electronics Shopping in Gadget Zone store. Click below link for continue shopping.',
+					}, 'AddPAndWelcome')
+					return redirect('/')
+				else:
+					messages.warning(request, f'OTP is Inavalid')
+					return render(request, 'authentication/signup.html', {'otp': True, 'user': user})
+
+			except:
+				messages.warning(request, f'OTP is Inavalid')
+				return render(request, 'authentication/signup.html', {'otp': True, 'user': user})
+
 		form = UserCreationForm(request.POST)
 		if form.is_valid():
-			user = form.save()
+			form.save()
 			username = form.cleaned_data.get('username')
 			email = form.cleaned_data.get('email')
+			user = User.objects.get(username=username)
+			user.email = email
+			user.username = username
+			user.is_active = False
+			user.save()
+			user_otp = random.randint(100000, 999999)
+			messages.success(request, f"OTP send to {user.email}")
+			UserOTP.objects.create(user=user, otp=user_otp)
+			otpMail(request, user.email, username, user_otp)
 			login(request, user)
-			messages.success(request, f"Account for {username} created successfully")
-			sendMail(request, [email], {
-				'head': 'accountCreated',
-				'p1':'WELCOME',
-				'p2':username,
-				'p3':'Thanks for signing up to The Gadget Zone store. Enjoy Electronics Shopping in Gadget Zone store. Click below link for continue shopping.',
-			}, 'AddPAndWelcome')
-			return redirect('/')
+			return render(request, 'authentication/signup.html', {'otp': True, 'user': user})
+	else:
+		form = UserCreationForm()
+
 	content = {'form': form}
 	return render(request, 'authentication/signup.html', content)
+
+@unauthenticated_user
+def resend_otp(request):
+	if request.method == "GET":
+		get_user = request.GET.get('user')
+		if User.objects.filter(username=get_user).exists() and not User.objects.get(username=get_user).is_active:
+			user = User.objects.get(username=get_user)
+			user_otp = random.randint(100000, 999999)
+			UserOTP.objects.create(user=user, otp=user_otp)
+			otpMail(request, user.email, user.username, user_otp)
+			return HttpResponse("Re Send")
+
+	return HttpResponse("Can't Send")
+
 
 def logoutUser(request):
 	logout(request)

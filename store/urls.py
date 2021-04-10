@@ -46,7 +46,7 @@ urlpatterns = [
 	 auth_views.PasswordResetCompleteView.as_view(template_name = 'authentication/password_reset_done.html'),
 	  name='password_reset_complete'), #password successfully send
 
-
+	path('resendOTP/',views.resend_otp, name="resend"),
 	path('login/', views.loginPage, name="login"),
 	path('signup/', views.signup, name="signup"),
 	path('logout/', views.logoutUser, name="logout"),

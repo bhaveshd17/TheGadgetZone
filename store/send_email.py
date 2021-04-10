@@ -23,3 +23,16 @@ def sendMail(request, email, mailFor, msg):
     email.fail_silently = False
     email.content_subtype = 'html'
     email.send()
+
+
+def otpMail(request, email, username, user_otp):
+    email = EmailMessage(
+        'Please Verify Your Email ID',
+        f"Hello {username},\n Your OTP is {user_otp} \n Please Verify",
+        settings.EMAIL_HOST_USER,
+        [email],
+    )
+
+    email.fail_silently = False
+    email.content_subtype = 'html'
+    email.send()
