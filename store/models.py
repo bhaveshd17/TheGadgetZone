@@ -164,4 +164,4 @@ class Review(models.Model):
 class UserOTP(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True, blank=True)
     time_st = models.DateTimeField(auto_now= True)
-    otp = models.SmallIntegerField()
+    otp = models.IntegerField()
