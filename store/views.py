@@ -570,8 +570,9 @@ def edit_product(request, pk):
 	if request.method == 'POST':
 		form = ProductForm(request.POST, request.FILES, instance=product)
 		if form.is_valid():
-			cloudinary.uploader.destroy(p_id, invalidate=True)
 			form.save()
+			if p_id != product.image.public_id:
+				cloudinary.uploader.destroy(p_id, invalidate=True)
 			messages.success(request, "Product update successfully")
 			return redirect(f'/viewProducts/{pk}')
 	content = {'cartItems':cartItems, 'form':form}
