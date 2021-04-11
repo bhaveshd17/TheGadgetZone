@@ -7,13 +7,19 @@
         <button type="button" data-bs-target="#storeCarousel" data-bs-slide-to="0" class="active" aria-current="true"
             aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#storeCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#storeCarouse1" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="{%static 'img/off2.png'%}" class="d-block" width="1500" height="400" alt="...">
+            <img src="{%static 'img/off1.png'%}" class="d-block" width="1500" height="400" alt="...">
         </div>
+
         <div class="carousel-item">
-            <img src="{%static 'img/off1.jpeg'%}" class="d-block" width="1500" height="400" alt="...">
+            <img src="{%static 'img/off2.jpg'%}" class="d-block" width="1500" height="400" alt="...">
+        </div>
+
+        <div class="carousel-item">
+            <img src="{%static 'img/off3.png'%}" class="d-block" width="1500" height="400" alt="...">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#storeCarousel" data-bs-slide="prev">
@@ -30,15 +36,15 @@
 
 <div class="row p-0">
     <div class="col-md-3 mt-5">
-            {% if request.user.is_staff %}
-            <div class="card card-body mb-3" style="width: 18rem;">
+        {% if request.user.is_staff %}
+        <div class="card card-body mb-3" style="width: 18rem;">
             <div class="card-title text-muted text-center fs-5">Admin Panel</div>
             <ul class="list-group list-group-flush text-center">
                 <li class="list-group-item"><a href="{% url 'dashboard' %}" class="fs-6">Dashboard</a></li>
-                <li class="list-group-item"><a href="{% url 'addProducts' %}" class="fs-6">Add Product</a></li>
-            </ul>
-            </div>
-            {% endif %}
+                <li class="list-group-item"><a href="{% url 'addProducts' %}" class="fs-6">Add Products</a></li>
+              </ul>
+        </div>
+        {% endif %}
         <div class="card card-body vh-100" style="width: 18rem;">
             
             <div class="card-title text-muted text-center fs-5">Categories</div>
