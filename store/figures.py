@@ -45,6 +45,7 @@ def get_plot(x, y):
 def get_pie(category, labels):
     colors = random.choices(list(mcolors.CSS4_COLORS.values()),k = len(labels))
     explode = [0, 0, 0, 0, 0, 0]
+    plt.title('category-wise orders selling')
     plt.figure(figsize=(5, 5))
     plt.pie(category, colors=colors, labels=labels, shadow=True, autopct='%3.1f%%', startangle=180)
     plt.tight_layout()

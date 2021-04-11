@@ -1,6 +1,6 @@
 # The Gadgets Zone 
 
-A E-Commerce website of Electronic Products built by using django framework, It has one admin and admin can add products, edit products and delete products admin can also analyse the orders category wise and transactions per day
+A E-Commerce website of Electronic Products built by using django framework, It has one admin and admin can add products, edit products and delete products admin can also analyse the orders category wise and transactions per day. 
 Customer can create account in the gadgets zone and verify email by otp and can buy electronics products and purchase them using paypal account. Customer can also give reviews on product.
 
 ## Demo 
