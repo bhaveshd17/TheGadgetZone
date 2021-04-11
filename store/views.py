@@ -56,7 +56,7 @@ def signup(request):
 						'p1': 'WELCOME',
 						'p2': user.username,
 						'p3': 'Thanks for signing up to The Gadget Zone store. Enjoy Electronics Shopping in Gadget Zone store. Click below link for continue shopping.',
-					}, 'AddPAndWelcome')
+					}, 'AddPAndWelcome', 'Welcome To The Gadget Zone')
 					return redirect('/')
 				else:
 					messages.warning(request, f'OTP is Inavalid')
@@ -385,7 +385,7 @@ def processOrder(request):
 		'products':OrderItem.objects.filter(order=order),
 		'order':order,
 		'msg':'Confirmed'
-	}, 'delivery')
+	}, 'delivery', 'order confirmation mail')
 	return JsonResponse('Payment Complete', safe=False)
 
 
@@ -427,7 +427,7 @@ def addProducts(request):
 			'p4':f'Price : {product.discountPrice}',
 			'p5':'Grab the offer hurry up before out !!',
 
-		}, 'AddPAndWelcome')
+		}, 'AddPAndWelcome', 'New product out!!')
 		messages.success(request, f"Successfully added {product}")
 		return redirect('/')
 
@@ -478,7 +478,7 @@ def shippingBtn(request):
 				'products': orderItem,
 				'order': order,
 				'msg': 'Shipped'
-			}, 'delivery')
+			}, 'delivery', 'order status details')
 			messages.success(request, f"{orderItem} Send for shipment !")
 		else:
 			messages.warning(request, f"{orderItem} already Shipped")
@@ -504,7 +504,7 @@ def deliveredBtn(request):
 				'products': orderItem,
 				'order': order,
 				'msg': 'Delivered'
-			}, 'delivery')
+			}, 'delivery', 'order status details')
 			messages.success(request, f"{orderItem} successfully delivered !")
 		else:
 			messages.warning(request, f"{orderItem} already Delivered")
