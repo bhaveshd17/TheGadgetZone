@@ -18,7 +18,9 @@
           <p class="card-text"><span>Order Status :- <strong> {{orderItem.status}}</strong></span></p>
           <p class="card-text"><span class="text-muted">Order placed at {{orderItem.date}}</span></p>
           <p class="card-text"><span style="color: green;">Paid  &#8377 {{orderItem.product.discountPrice}}</span></p>
+          {% if orderItem.status != 'Delivered' %}
           <a href="{% url 'cancelOrder' orderItem.id%}" class="btn btn-outline-danger">Cancel</a>
+          {% endif %}
 
         </div>
       </div>
