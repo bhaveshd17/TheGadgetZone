@@ -141,11 +141,13 @@
                     <th>Status</th>
                 </tr>
                 {% for orderItem in orderItems %}
+	        {% if orderItem.order.complete == True %}
                 <tr>
                     <td>{{orderItem.product.category}}</td>
                     <td>{{orderItem.order.date}}</td>
                     <td>{{orderItem.status}}</td>
                 </tr>
+		{% endif %}
                 {% endfor %}
             </table>
             <a href="{% url 'allOrder' %}" class="btn btn-primary btn-sm btn-block">
