@@ -13,7 +13,7 @@ to see website visit: http://thegadgetszone.herokuapp.com/
 
 - clone this repository
 ```
-git clone  
+git clone https://github.com/bhaveshd17/TheGadgetZone.git
 ```
 
 - install required libraries using 
