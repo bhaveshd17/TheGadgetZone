@@ -8,7 +8,6 @@
 </div>
 <div class="my-3">
     {% for orderItem in orderItems %}
-    {% if orderItem.order.complete == True %}
     <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-3">
@@ -46,7 +45,6 @@
           </div>
         </div>
       </div>
-    {% endif %}
     {% endfor %}
 </div>
 

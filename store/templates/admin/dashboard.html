@@ -68,18 +68,35 @@
 </div>
 
 {% if chart %}
-<div class="d-flex align-item-center justify-content-center my-3">
-    <img src="data:image:png;base64, {{chart|safe}}">
-</div>
-{% endif %}
-{% if tchart %}
-<div class="d-flex align-item-center justify-content-center my-3">
-    <img src="data:image:png;base64, {{tchart|safe}}">
-</div>
+<div class="card text-center mt-5">
+    <div class="card-header fs-4">
+       Order Analysis
+    </div>
+    <div class="card-body my-2">
+        <div class="d-flex align-item-center justify-content-center my-3">
+            <img src="data:image:png;base64, {{chart|safe}}">
+        </div>
+    </div>
+</div> 
 {% endif %}
 
-<div class="row my-3">
-    <div class="col-md-4 mt-5">
+
+{% if tchart %}
+<div class="card text-center mt-5">
+    <div class="card-header fs-4">
+        Daily Transactions
+    </div>
+    <div class="card-body my-2">
+        <div class="d-flex align-item-center justify-content-center my-3">
+            <img src="data:image:png;base64, {{tchart|safe}}">
+        </div>
+    </div>
+</div> 
+
+{% endif %}
+
+<div class="row my-3 px-0">
+    <div class="col-md-5 mt-5">
             <div class="mt-5">
                 <div class="card text-center mb-3 color-1">
                     <div class="card-header">
@@ -100,17 +117,24 @@
             </div>
     </div>
 
-    <div class="col-md-8">
-        {% if pie_chart %}
-        <div class="d-flex align-item-center justify-content-center my-3">
-            <img src="data:image:png;base64, {{pie_chart|safe}}">
-        </div>
-        {% endif %}
+    {% if pie_chart %}
+    <div class="col-md-7">
+        <div class="card text-center mt-5">
+            <div class="card-header fs-4">
+                category-wise orders selling
+            </div>
+            <div class="card-body my-2">
+                <div class="d-flex align-item-center justify-content-center my-3">
+                    <img src="data:image:png;base64, {{pie_chart|safe}}">
+                </div>
+            </div>
+        </div> 
     </div>
+    {% endif %}
 
 </div>
 
-<div class="row my-3">
+<div class="row my-3 px-0">
     <div class="col-md-5">
         <h4>Customers</h4>
         <div class="card card-body">
@@ -141,13 +165,12 @@
                     <th>Status</th>
                 </tr>
                 {% for orderItem in orderItems %}
-	        {% if orderItem.order.complete == True %}
+
                 <tr>
                     <td>{{orderItem.product.category}}</td>
                     <td>{{orderItem.order.date}}</td>
                     <td>{{orderItem.status}}</td>
                 </tr>
-		{% endif %}
                 {% endfor %}
             </table>
             <a href="{% url 'allOrder' %}" class="btn btn-primary btn-sm btn-block">
