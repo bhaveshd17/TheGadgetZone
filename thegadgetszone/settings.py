@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '-v2o+l%8k&&f$@9a7y-#5e8urg6l1-9j=%q^8$!t70*4xq_dqq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['thegadgetszone.herokuapp.com', '127.0.0.1']
@@ -77,17 +77,23 @@ WSGI_APPLICATION = 'thegadgetszone.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#          'ENGINE': 'django.db.backends.postgresql',
+#          'NAME': 'ecomdb',
+#          'USER': '',
+#          'PASSWORD': '',
+#          'HOST': 'database-1.chvezftc7zlu.us-east-2.rds.amazonaws.com',
+#          'PORT': '5432'
+#     }
+# }
+
 DATABASES = {
     'default': {
-         'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'ecomdb',
-         'USER': 'chinmay101',
-         'PASSWORD': 'chinmay10',
-         'HOST': 'database-1.chvezftc7zlu.us-east-2.rds.amazonaws.com',
-         'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -125,9 +131,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = '/static/'
-
 
 # manual
 STATICFILES_DIRS = [
