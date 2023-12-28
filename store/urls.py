@@ -18,7 +18,7 @@ urlpatterns = [
 	path('remove_address/<int:pk>',views.remove_address, name="remove_address"),
 	path('userOrderDetails/', views.userOrderDetails, name="userOrderDetails"),
 	path('cancelOrder/<int:pk>/', views.cancelOrder, name="cancelOrder"),
-	path('search/', views.search, name='search'),
+	path('search', views.search, name='search'),
 
 	path('remove_product/<int:pk>/', views.remove_product, name="remove_product"),
 	path('edit_product/<int:pk>', views.edit_product, name="edit_product"),

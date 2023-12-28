@@ -44,7 +44,7 @@ def dashboardContent(request):
     transactionChart = get_plot(x, transaction)
 
     total_payment = sum(transaction)
-    profit = (len(orderItem)*60)//100
+    profit = (len(orderItem)*60)
 
     categories = Category.objects.all()
     cat_list = []

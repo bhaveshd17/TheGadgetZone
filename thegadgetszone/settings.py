@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import cloudinary.uploader
 import os
@@ -13,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['thegadgetszone.herokuapp.com', '127.0.0.1']
@@ -121,9 +120,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# manual
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
